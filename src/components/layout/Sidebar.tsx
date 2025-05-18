@@ -6,33 +6,30 @@ import {
   Building2,
   Users,
   Settings,
-  ChevronDown,
-  ChevronRight,
+  ChevronLeft,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTheme } from "../../contexts/ThemeContext";
 import Meter from "../../../public/meter.svg";
 
 const Sidebar = () => {
   const { user } = useAuth();
-  const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
-
-  const toggleMenu = (menu: string) => {
-    setExpandedMenus((prev) =>
-      prev.includes(menu)
-        ? prev.filter((item) => item !== menu)
-        : [...prev, menu]
-    );
-  };
-
-  const isMenuExpanded = (menu: string) => expandedMenus.includes(menu);
+  const { sidebarCollapsed, toggleSidebar, isDarkMode, toggleTheme } =
+    useTheme();
 
   return (
-    <aside className="w-64 h-full border-r border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700">
+    <aside
+      className={`h-full border-r border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 transition-all duration-300 ${
+        sidebarCollapsed ? "w-16" : "w-64"
+      }`}
+    >
       <div className="flex h-full flex-col">
         {/* Sidebar header with logo */}
         <div className="flex h-16 items-center justify-center border-b border-gray-200 px-4 dark:border-gray-700">
           <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
-            Curator
+            {sidebarCollapsed ? "C" : "Curator"}
           </span>
         </div>
 
@@ -41,86 +38,117 @@ const Sidebar = () => {
           <nav className="space-y-1">
             {user?.role === "owner" ? (
               <>
-                <NavItem to="/owner" icon={<Home />} label="Dashboard" />
+                <NavItem
+                  to="/owner"
+                  icon={<Home />}
+                  label="Dashboard"
+                  collapsed={sidebarCollapsed}
+                />
                 <NavItem
                   to="/owner/readings"
                   icon={<Droplet />}
                   label="My Readings"
+                  collapsed={sidebarCollapsed}
                 />
               </>
             ) : (
               <>
-                <NavItem to="/manager" icon={<Home />} label="Dashboard" />
-
+                <NavItem
+                  to="/manager"
+                  icon={<Home />}
+                  label="Dashboard"
+                  collapsed={sidebarCollapsed}
+                />
                 <NavItem
                   icon={<Building2 />}
                   to="/manager/buildings"
                   label="All Buildings"
                   subItem
+                  collapsed={sidebarCollapsed}
                 />
-
                 <NavItem
-                  icon={<img src={Meter} alt="Meter" className="w-5 h-5" />}
+                  icon={
+                    <img
+                      src={Meter}
+                      alt="Meter"
+                      className="w-5 h-5 flex-shrink-0"
+                    />
+                  }
                   to="/manager/apartments"
                   label="All Apartments"
                   subItem
+                  collapsed={sidebarCollapsed}
                 />
-
-                {/* Users section */}
-                <div className="py-1">
-                  <button
-                    className="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-                    onClick={() => toggleMenu("users")}
-                  >
-                    <div className="flex items-center">
-                      <Users className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                      <span>Users</span>
-                    </div>
-                    {isMenuExpanded("users") ? (
-                      <ChevronDown className="h-4 w-4" />
-                    ) : (
-                      <ChevronRight className="h-4 w-4" />
-                    )}
-                  </button>
-
-                  {isMenuExpanded("users") && (
-                    <div className="mt-1 pl-10 space-y-1">
-                      <NavItem
-                        to="/manager/users"
-                        label="All Users"
-                        subItem
-                        preventDefault
-                      />
-                      <NavItem
-                        to="/manager/users/add"
-                        label="Add User"
-                        subItem
-                        preventDefault
-                      />
-                    </div>
-                  )}
-                </div>
+                <NavItem
+                  icon={<Users />}
+                  to="/manager/users"
+                  label="All Users"
+                  subItem
+                  preventDefault
+                  collapsed={sidebarCollapsed}
+                />
               </>
             )}
 
             {/* Common menu items */}
-            <NavItem to="/settings" icon={<Settings />} label="Settings" />
+            <NavItem
+              to="/settings"
+              icon={<Settings />}
+              label="Settings"
+              collapsed={sidebarCollapsed}
+            />
           </nav>
         </div>
 
-        {/* User info at bottom */}
-        <div className="border-t border-gray-200 p-4 dark:border-gray-700">
-          <div className="flex items-center">
-            <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-              {user?.name.charAt(0)}
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {user?.name}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">
-                {user?.role}
-              </p>
+        {/* Theme and Collapse buttons */}
+        <div className="border-t border-gray-200 dark:border-gray-700">
+          <div className="flex">
+            <button
+              onClick={toggleSidebar}
+              className="flex-1 p-3 flex items-center justify-center border-l border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700">
+                <ChevronLeft
+                  className={`h-4 w-4 text-gray-600 dark:text-gray-300 transition-transform duration-200 ${
+                    sidebarCollapsed ? "rotate-180" : ""
+                  }`}
+                />
+              </div>
+            </button>
+            {!sidebarCollapsed && (
+              <button
+                onClick={toggleTheme}
+                className="flex-1 p-3 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700">
+                  {isDarkMode ? (
+                    <Sun className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+                  ) : (
+                    <Moon className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+                  )}
+                </div>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* User info and collapse button at bottom */}
+        <div className="border-t border-gray-200 dark:border-gray-700">
+          <div className="p-4">
+            <div className="flex items-center">
+              <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                {user?.name.charAt(0)}
+              </div>
+              {!sidebarCollapsed && (
+                <div className="ml-3">
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {user?.name}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">
+                    {user?.role}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -135,6 +163,7 @@ interface NavItemProps {
   label: string;
   subItem?: boolean;
   preventDefault?: boolean;
+  collapsed?: boolean;
 }
 
 const NavItem = ({
@@ -143,6 +172,7 @@ const NavItem = ({
   label,
   subItem = false,
   preventDefault = false,
+  collapsed = false,
 }: NavItemProps) => {
   return (
     <NavLink
@@ -164,10 +194,20 @@ const NavItem = ({
         }
         ${subItem ? "text-sm" : "text-sm font-medium"}
         flex items-center rounded-md px-3 py-2
+        ${collapsed ? "justify-center" : ""}
       `}
+      title={collapsed ? label : undefined}
     >
-      {icon && <span className="mr-3 h-5 w-5">{icon}</span>}
-      {label}
+      {icon && (
+        <span
+          className={`h-5 w-5 flex items-center justify-center ${
+            !collapsed ? "mr-3" : ""
+          }`}
+        >
+          {icon}
+        </span>
+      )}
+      {!collapsed && label}
     </NavLink>
   );
 };
