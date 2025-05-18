@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { ChevronDown, ChevronUp, Download, Search, Filter } from 'lucide-react';
-import Button from './Button';
+import { useState } from "react";
+import { ChevronDown, ChevronUp, Download, Search, Filter } from "lucide-react";
+import Button from "./Button";
 
 interface TableColumn<T> {
   header: string;
@@ -35,23 +35,24 @@ function Table<T>({
   loading = false,
 }: TableProps<T>) {
   const [sortField, setSortField] = useState<keyof T | null>(null);
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Handle sorting
   const handleSort = (column: TableColumn<T>) => {
     if (!column.sortable) return;
-    
-    const accessor = typeof column.accessor === 'string' ? column.accessor : null;
+
+    const accessor =
+      typeof column.accessor === "string" ? column.accessor : null;
     if (!accessor) return;
 
     if (sortField === accessor) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
       setSortField(accessor);
-      setSortDirection('asc');
+      setSortDirection("asc");
     }
   };
 
@@ -70,25 +71,27 @@ function Table<T>({
       onExport();
     } else {
       // Default CSV export
-      const headers = columns.map(col => typeof col.header === 'string' ? col.header : '');
-      const csvData = data.map(row => 
+      const headers = columns.map((col) =>
+        typeof col.header === "string" ? col.header : ""
+      );
+      const csvData = data.map((row) =>
         columns
-          .map(col => {
-            if (typeof col.accessor === 'string') {
+          .map((col) => {
+            if (typeof col.accessor === "string") {
               return String(row[col.accessor]);
             }
-            return '';
+            return "";
           })
-          .join(',')
+          .join(",")
       );
-      
-      const csv = [headers.join(','), ...csvData].join('\n');
-      
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+      const csv = [headers.join(","), ...csvData].join("\n");
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('download', `${title || 'table-data'}.csv`);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `${title || "table-data"}.csv`);
       link.click();
     }
   };
@@ -110,7 +113,7 @@ function Table<T>({
               {title}
             </h3>
           )}
-          
+
           <div className="mt-3 sm:mt-0 flex flex-col sm:flex-row gap-2">
             {searchable && (
               <div className="relative">
@@ -126,7 +129,7 @@ function Table<T>({
                 />
               </div>
             )}
-            
+
             {exportable && (
               <Button
                 variant="outline"
@@ -140,7 +143,7 @@ function Table<T>({
           </div>
         </div>
       )}
-      
+
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -151,16 +154,16 @@ function Table<T>({
                   key={index}
                   scope="col"
                   className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400 ${
-                    column.sortable ? 'cursor-pointer select-none' : ''
-                  } ${column.className || ''}`}
+                    column.sortable ? "cursor-pointer select-none" : ""
+                  } ${column.className || ""}`}
                   onClick={() => handleSort(column)}
                 >
                   <div className="flex items-center space-x-1">
                     <span>{column.header}</span>
-                    {column.sortable && typeof column.accessor === 'string' && (
+                    {column.sortable && typeof column.accessor === "string" && (
                       <span>
                         {sortField === column.accessor ? (
-                          sortDirection === 'asc' ? (
+                          sortDirection === "asc" ? (
                             <ChevronUp className="h-4 w-4" />
                           ) : (
                             <ChevronDown className="h-4 w-4" />
@@ -218,13 +221,16 @@ function Table<T>({
               </tr>
             ) : (
               paginatedData.map((row) => (
-                <tr key={String(row[keyField])} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                <tr
+                  key={String(row[keyField])}
+                  className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
                   {columns.map((column, index) => (
                     <td
                       key={index}
-                      className={`px-6 py-4 whitespace-nowrap ${column.className || ''}`}
+                      className={`px-6 py-4 whitespace-nowrap ${column.className || ""}`}
                     >
-                      {typeof column.accessor === 'string'
+                      {typeof column.accessor === "string"
                         ? String(row[column.accessor])
                         : column.accessor(row)}
                     </td>
@@ -251,26 +257,35 @@ function Table<T>({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+              onClick={() =>
+                setCurrentPage(Math.min(totalPages, currentPage + 1))
+              }
               disabled={currentPage === totalPages}
             >
               Next
             </Button>
           </div>
-          
+
           <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
               <p className="text-sm text-gray-700 dark:text-gray-300">
-                Showing <span className="font-medium">{(currentPage - 1) * itemsPerPage + 1}</span> to{' '}
+                Showing{" "}
+                <span className="font-medium">
+                  {(currentPage - 1) * itemsPerPage + 1}
+                </span>{" "}
+                to{" "}
                 <span className="font-medium">
                   {Math.min(currentPage * itemsPerPage, data.length)}
-                </span>{' '}
+                </span>{" "}
                 of <span className="font-medium">{data.length}</span> results
               </p>
             </div>
-            
+
             <div>
-              <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+              <nav
+                className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                aria-label="Pagination"
+              >
                 <Button
                   variant="outline"
                   size="sm"
@@ -280,7 +295,7 @@ function Table<T>({
                 >
                   Previous
                 </Button>
-                
+
                 {/* Page numbers */}
                 {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => {
                   let pageNumber;
@@ -293,7 +308,7 @@ function Table<T>({
                   } else {
                     pageNumber = currentPage - 2 + i;
                   }
-                  
+
                   return (
                     <button
                       key={pageNumber}
@@ -301,8 +316,8 @@ function Table<T>({
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium 
                         ${
                           currentPage === pageNumber
-                            ? 'bg-blue-50 border-blue-500 text-blue-600 z-10'
-                            : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                            ? "bg-blue-50 border-blue-500 text-blue-600 z-10"
+                            : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
                         }
                         dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300
                       `}
@@ -311,12 +326,14 @@ function Table<T>({
                     </button>
                   );
                 })}
-                
+
                 <Button
                   variant="outline"
                   size="sm"
                   className="rounded-r-md"
-                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                  onClick={() =>
+                    setCurrentPage(Math.min(totalPages, currentPage + 1))
+                  }
                   disabled={currentPage === totalPages}
                 >
                   Next

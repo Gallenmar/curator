@@ -1,5 +1,5 @@
-import { Droplet } from 'lucide-react';
-import Table from '../ui/Table';
+import { Droplet } from "lucide-react";
+import Table from "../ui/Table";
 
 // Define the reading data type
 interface ReadingData {
@@ -8,7 +8,7 @@ interface ReadingData {
   hotWater: number;
   coldWater: number;
   submittedAt: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: "pending" | "approved" | "rejected";
 }
 
 interface ReadingHistoryTableProps {
@@ -16,25 +16,28 @@ interface ReadingHistoryTableProps {
   loading?: boolean;
 }
 
-const ReadingHistoryTable = ({ readings, loading = false }: ReadingHistoryTableProps) => {
+const ReadingHistoryTable = ({
+  readings,
+  loading = false,
+}: ReadingHistoryTableProps) => {
   // Format date for display
   const formatDate = (dateString: string): string => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
   };
 
   // Define table columns
   const columns = [
     {
-      header: 'Month',
-      accessor: 'month',
+      header: "Month",
+      accessor: "month",
       sortable: true,
     },
     {
-      header: 'Hot Water (m³)',
+      header: "Hot Water (m³)",
       accessor: (row: ReadingData) => (
         <div className="flex items-center">
           <Droplet className="h-4 w-4 text-red-500 mr-1" />
@@ -44,7 +47,7 @@ const ReadingHistoryTable = ({ readings, loading = false }: ReadingHistoryTableP
       sortable: true,
     },
     {
-      header: 'Cold Water (m³)',
+      header: "Cold Water (m³)",
       accessor: (row: ReadingData) => (
         <div className="flex items-center">
           <Droplet className="h-4 w-4 text-blue-500 mr-1" />
@@ -54,21 +57,25 @@ const ReadingHistoryTable = ({ readings, loading = false }: ReadingHistoryTableP
       sortable: true,
     },
     {
-      header: 'Submitted',
+      header: "Submitted",
       accessor: (row: ReadingData) => formatDate(row.submittedAt),
       sortable: true,
     },
     {
-      header: 'Status',
+      header: "Status",
       accessor: (row: ReadingData) => {
         const statusColors = {
-          pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
-          approved: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-          rejected: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
+          pending:
+            "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",
+          approved:
+            "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
+          rejected: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
         };
-        
+
         return (
-          <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[row.status]}`}>
+          <span
+            className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[row.status]}`}
+          >
             {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
           </span>
         );

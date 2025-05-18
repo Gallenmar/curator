@@ -1,6 +1,6 @@
-import { Building2, Home, User, Check, X } from 'lucide-react';
-import Card from '../ui/Card';
-import Button from '../ui/Button';
+import { Building2, Home, User, Check, X } from "lucide-react";
+import Card from "../ui/Card";
+import Button from "../ui/Button";
 
 interface BuildingCardProps {
   id: string;
@@ -26,13 +26,15 @@ const BuildingCard = ({
   onEdit,
 }: BuildingCardProps) => {
   // Calculate percentages
-  const occupancyRate = totalApartments > 0 
-    ? Math.round((occupiedApartments / totalApartments) * 100) 
-    : 0;
-    
-  const submissionRate = occupiedApartments > 0 
-    ? Math.round((submittedReadings / occupiedApartments) * 100) 
-    : 0;
+  const occupancyRate =
+    totalApartments > 0
+      ? Math.round((occupiedApartments / totalApartments) * 100)
+      : 0;
+
+  const submissionRate =
+    occupiedApartments > 0
+      ? Math.round((submittedReadings / occupiedApartments) * 100)
+      : 0;
 
   return (
     <Card className="h-full transition-transform duration-200 hover:shadow-lg">
@@ -40,12 +42,16 @@ const BuildingCard = ({
         <div className="flex items-start justify-between">
           <div className="flex items-center">
             <Building2 className="h-6 w-6 text-blue-500 mr-2" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{name}</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              {name}
+            </h3>
           </div>
         </div>
-        
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{address}</p>
-        
+
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          {address}
+        </p>
+
         <div className="mt-4 grid grid-cols-2 gap-4">
           <div className="bg-gray-50 p-3 rounded-lg dark:bg-gray-700">
             <div className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -65,7 +71,7 @@ const BuildingCard = ({
               {occupancyRate}% occupancy
             </p>
           </div>
-          
+
           <div className="bg-gray-50 p-3 rounded-lg dark:bg-gray-700">
             <div className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
               <Check className="h-4 w-4 mr-1" />
@@ -85,7 +91,7 @@ const BuildingCard = ({
             </p>
           </div>
         </div>
-        
+
         <div className="mt-4 flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
           <div className="flex items-center">
             <User className="h-4 w-4 mr-1" />
@@ -97,20 +103,12 @@ const BuildingCard = ({
             <span>{pendingReadings} pending</span>
           </div>
         </div>
-        
+
         <div className="mt-auto pt-4 flex space-x-2">
-          <Button 
-            variant="outline" 
-            onClick={() => onView(id)} 
-            fullWidth
-          >
+          <Button variant="outline" onClick={() => onView(id)} fullWidth>
             View
           </Button>
-          <Button 
-            variant="primary" 
-            onClick={() => onEdit(id)} 
-            fullWidth
-          >
+          <Button variant="primary" onClick={() => onEdit(id)} fullWidth>
             Edit
           </Button>
         </div>

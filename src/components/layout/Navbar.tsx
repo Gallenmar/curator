@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Menu, Bell, Settings, LogOut, Moon, Sun, Search } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
-import { useTheme } from '../../contexts/ThemeContext';
-import LanguageSwitcher from '../ui/LanguageSwitcher';
-import { useTranslation } from 'react-i18next';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Menu, Bell, Settings, LogOut, Moon, Sun, Search } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useTheme } from "../../contexts/ThemeContext";
+import LanguageSwitcher from "../ui/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -16,7 +16,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -30,7 +30,7 @@ const Navbar = () => {
           >
             <Menu className="h-6 w-6" />
           </button>
-          
+
           <div className="flex items-center">
             <span className="text-xl font-semibold text-gray-900 dark:text-white">
               WaterMeter
@@ -47,7 +47,7 @@ const Navbar = () => {
             <input
               type="search"
               className="block w-full py-2 pl-10 pr-3 rounded-lg border border-gray-300 bg-gray-50 text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder={t('search')}
+              placeholder={t("search")}
             />
           </div>
         </div>
@@ -56,19 +56,19 @@ const Navbar = () => {
         <div className="flex items-center space-x-3">
           {/* Language switcher */}
           <LanguageSwitcher />
-          
+
           {/* Theme toggle */}
           <button
             onClick={toggleTheme}
             className="relative rounded-full p-1 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-300 dark:hover:bg-gray-700"
           >
-            {theme === 'dark' ? (
+            {theme === "dark" ? (
               <Sun className="h-5 w-5" />
             ) : (
               <Moon className="h-5 w-5" />
             )}
           </button>
-          
+
           {/* Notifications */}
           <div className="relative">
             <button
@@ -80,31 +80,33 @@ const Navbar = () => {
               </span>
               <Bell className="h-5 w-5" />
             </button>
-            
+
             {/* Notifications dropdown */}
             {isNotificationsOpen && (
               <div className="absolute right-0 mt-2 w-80 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 dark:ring-gray-700">
                 <div className="p-3">
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-white">Notifications</h3>
+                  <h3 className="text-sm font-medium text-gray-900 dark:text-white">
+                    Notifications
+                  </h3>
                   <div className="mt-2 divide-y divide-gray-200 dark:divide-gray-700">
-                    <NotificationItem 
-                      message="New reading submitted for Apt 101" 
-                      time="5 min ago" 
+                    <NotificationItem
+                      message="New reading submitted for Apt 101"
+                      time="5 min ago"
                     />
-                    <NotificationItem 
-                      message="Your reading was approved" 
-                      time="1 hour ago" 
+                    <NotificationItem
+                      message="Your reading was approved"
+                      time="1 hour ago"
                     />
-                    <NotificationItem 
-                      message="Reminder: Submit your water readings" 
-                      time="Yesterday" 
+                    <NotificationItem
+                      message="Reminder: Submit your water readings"
+                      time="Yesterday"
                     />
                   </div>
                 </div>
               </div>
             )}
           </div>
-          
+
           {/* User menu */}
           <div className="relative">
             <button
@@ -118,7 +120,7 @@ const Navbar = () => {
                 <span className="hidden md:block">{user?.name}</span>
               </div>
             </button>
-            
+
             {/* User dropdown */}
             {isMenuOpen && (
               <div className="absolute right-0 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 dark:ring-gray-700">
@@ -128,14 +130,14 @@ const Navbar = () => {
                     className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                   >
                     <Settings className="mr-2 h-4 w-4" />
-                    {t('settings')}
+                    {t("settings")}
                   </a>
                   <button
                     onClick={handleLogout}
                     className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                   >
                     <LogOut className="mr-2 h-4 w-4" />
-                    {t('logout')}
+                    {t("logout")}
                   </button>
                 </div>
               </div>
@@ -147,7 +149,13 @@ const Navbar = () => {
   );
 };
 
-const NotificationItem = ({ message, time }: { message: string; time: string }) => {
+const NotificationItem = ({
+  message,
+  time,
+}: {
+  message: string;
+  time: string;
+}) => {
   return (
     <div className="py-2">
       <p className="text-sm text-gray-800 dark:text-gray-300">{message}</p>

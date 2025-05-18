@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 interface CardProps {
   children: ReactNode;
@@ -8,7 +8,13 @@ interface CardProps {
   className?: string;
 }
 
-const Card = ({ children, title, description, footer, className = '' }: CardProps) => {
+const Card = ({
+  children,
+  title,
+  description,
+  footer,
+  className = "",
+}: CardProps) => {
   return (
     <div className={`bg-white rounded-lg shadow dark:bg-gray-800 ${className}`}>
       {(title || description) && (
@@ -25,9 +31,9 @@ const Card = ({ children, title, description, footer, className = '' }: CardProp
           )}
         </div>
       )}
-      
+
       <div className="p-4 sm:p-6">{children}</div>
-      
+
       {footer && (
         <div className="px-4 py-3 sm:px-6 border-t border-gray-200 dark:border-gray-700">
           {footer}

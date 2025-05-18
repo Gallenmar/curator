@@ -1,5 +1,5 @@
-import { Languages } from 'lucide-react';
-import { languages, useLanguage } from '../../contexts/LanguageContext';
+import { Languages } from "lucide-react";
+import { languages, useLanguage } from "../../contexts/LanguageContext";
 
 const LanguageSwitcher = () => {
   const { language, setLanguage } = useLanguage();
@@ -12,7 +12,7 @@ const LanguageSwitcher = () => {
       >
         <Languages className="h-5 w-5" />
         <span className="text-sm font-medium">
-          {languages.find(lang => lang.code === language)?.name || 'English'}
+          {languages.find((lang) => lang.code === language)?.name || "English"}
         </span>
       </button>
 
@@ -24,8 +24,8 @@ const LanguageSwitcher = () => {
               onClick={() => setLanguage(lang.code)}
               className={`block w-full px-4 py-2 text-sm text-left ${
                 language === lang.code
-                  ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white'
-                  : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+                  ? "bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white"
+                  : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
               }`}
             >
               {lang.name}

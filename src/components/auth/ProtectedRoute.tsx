@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import LoadingScreen from '../ui/LoadingScreen';
+import { ReactNode } from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+import LoadingScreen from "../ui/LoadingScreen";
 
 interface ProtectedRouteProps {
   children: ReactNode;
-  allowedRoles: ('owner' | 'manager')[];
+  allowedRoles: ("owner" | "manager")[];
 }
 
 const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {

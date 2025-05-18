@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import Chart from 'chart.js/auto';
+import { useEffect, useRef } from "react";
+import Chart from "chart.js/auto";
 
 type ChartData = {
   labels: string[];
@@ -20,7 +20,12 @@ interface LineChartProps {
   options?: any;
 }
 
-const LineChart = ({ data, title, height = 300, options = {} }: LineChartProps) => {
+const LineChart = ({
+  data,
+  title,
+  height = 300,
+  options = {},
+}: LineChartProps) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstance = useRef<Chart | null>(null);
 
@@ -32,10 +37,10 @@ const LineChart = ({ data, title, height = 300, options = {} }: LineChartProps) 
       }
 
       // Create new chart
-      const ctx = chartRef.current.getContext('2d');
+      const ctx = chartRef.current.getContext("2d");
       if (ctx) {
         chartInstance.current = new Chart(ctx, {
-          type: 'line',
+          type: "line",
           data: data,
           options: {
             responsive: true,
@@ -43,16 +48,16 @@ const LineChart = ({ data, title, height = 300, options = {} }: LineChartProps) 
             plugins: {
               title: {
                 display: !!title,
-                text: title || '',
+                text: title || "",
                 font: {
                   size: 16,
-                }
+                },
               },
               legend: {
-                position: 'top' as const,
+                position: "top" as const,
               },
               tooltip: {
-                mode: 'index' as const,
+                mode: "index" as const,
                 intersect: false,
               },
             },
@@ -67,8 +72,8 @@ const LineChart = ({ data, title, height = 300, options = {} }: LineChartProps) 
               },
             },
             interaction: {
-              mode: 'nearest' as const,
-              axis: 'x' as const,
+              mode: "nearest" as const,
+              axis: "x" as const,
               intersect: false,
             },
             ...options,
@@ -86,7 +91,7 @@ const LineChart = ({ data, title, height = 300, options = {} }: LineChartProps) 
   }, [data, title, options]);
 
   return (
-    <div style={{ height: `${height}px`, width: '100%' }}>
+    <div style={{ height: `${height}px`, width: "100%" }}>
       <canvas ref={chartRef} />
     </div>
   );
