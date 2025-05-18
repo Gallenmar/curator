@@ -75,7 +75,7 @@ const Sidebar = () => {
                     />
                   }
                   to="/manager/apartments"
-                  label="All Apartments"
+                  label="Water Meters"
                   subItem
                   collapsed={sidebarCollapsed}
                 />
