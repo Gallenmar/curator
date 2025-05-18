@@ -10,6 +10,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
+import Meter from "../../../public/meter.svg";
 
 const Sidebar = () => {
   const { user } = useAuth();
@@ -31,7 +32,7 @@ const Sidebar = () => {
         {/* Sidebar header with logo */}
         <div className="flex h-16 items-center justify-center border-b border-gray-200 px-4 dark:border-gray-700">
           <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
-            WaterMeter
+            Curator
           </span>
         </div>
 
@@ -51,71 +52,19 @@ const Sidebar = () => {
               <>
                 <NavItem to="/manager" icon={<Home />} label="Dashboard" />
 
-                {/* Buildings section */}
-                <div className="py-1">
-                  <button
-                    className="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-                    onClick={() => toggleMenu("buildings")}
-                  >
-                    <div className="flex items-center">
-                      <Building2 className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                      <span>Buildings</span>
-                    </div>
-                    {isMenuExpanded("buildings") ? (
-                      <ChevronDown className="h-4 w-4" />
-                    ) : (
-                      <ChevronRight className="h-4 w-4" />
-                    )}
-                  </button>
+                <NavItem
+                  icon={<Building2 />}
+                  to="/manager/buildings"
+                  label="All Buildings"
+                  subItem
+                />
 
-                  {isMenuExpanded("buildings") && (
-                    <div className="mt-1 pl-10 space-y-1">
-                      <NavItem
-                        to="/manager/buildings"
-                        label="All Buildings"
-                        subItem
-                      />
-                      <NavItem
-                        to="/manager/buildings/add"
-                        label="Add Building"
-                        subItem
-                      />
-                    </div>
-                  )}
-                </div>
-
-                {/* Apartments section */}
-                <div className="py-1">
-                  <button
-                    className="flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-                    onClick={() => toggleMenu("apartments")}
-                  >
-                    <div className="flex items-center">
-                      <Home className="mr-3 h-5 w-5 text-gray-500 dark:text-gray-400" />
-                      <span>Apartments</span>
-                    </div>
-                    {isMenuExpanded("apartments") ? (
-                      <ChevronDown className="h-4 w-4" />
-                    ) : (
-                      <ChevronRight className="h-4 w-4" />
-                    )}
-                  </button>
-
-                  {isMenuExpanded("apartments") && (
-                    <div className="mt-1 pl-10 space-y-1">
-                      <NavItem
-                        to="/manager/apartments"
-                        label="All Apartments"
-                        subItem
-                      />
-                      <NavItem
-                        to="/manager/apartments/add"
-                        label="Add Apartment"
-                        subItem
-                      />
-                    </div>
-                  )}
-                </div>
+                <NavItem
+                  icon={<img src={Meter} alt="Meter" className="w-5 h-5" />}
+                  to="/manager/apartments"
+                  label="All Apartments"
+                  subItem
+                />
 
                 {/* Users section */}
                 <div className="py-1">
@@ -136,11 +85,17 @@ const Sidebar = () => {
 
                   {isMenuExpanded("users") && (
                     <div className="mt-1 pl-10 space-y-1">
-                      <NavItem to="/manager/users" label="All Users" subItem />
+                      <NavItem
+                        to="/manager/users"
+                        label="All Users"
+                        subItem
+                        preventDefault
+                      />
                       <NavItem
                         to="/manager/users/add"
                         label="Add User"
                         subItem
+                        preventDefault
                       />
                     </div>
                   )}
@@ -179,12 +134,28 @@ interface NavItemProps {
   icon?: React.ReactNode;
   label: string;
   subItem?: boolean;
+  preventDefault?: boolean;
 }
 
-const NavItem = ({ to, icon, label, subItem = false }: NavItemProps) => {
+const NavItem = ({
+  to,
+  icon,
+  label,
+  subItem = false,
+  preventDefault = false,
+}: NavItemProps) => {
   return (
     <NavLink
       to={to}
+      end
+      onClick={
+        preventDefault
+          ? (e) => {
+              e.preventDefault();
+              alert("Component not implemented yet");
+            }
+          : undefined
+      }
       className={({ isActive }) => `
         ${
           isActive

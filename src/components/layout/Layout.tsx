@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import Sidebar from "./Sidebar";
-import Navbar from "./Navbar";
+// import Navbar from "./Navbar";
 import { useAuth } from "../../contexts/AuthContext";
 
 interface LayoutProps {
@@ -19,7 +19,7 @@ const Layout = ({ children }: LayoutProps) => {
 
       {/* Main content area */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        <Navbar />
+        {/* <Navbar /> */}
 
         {/* Page content with scrolling */}
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
