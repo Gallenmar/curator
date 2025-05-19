@@ -9,6 +9,7 @@ import {
   Sun,
   Moon,
   LogOut,
+  LayoutDashboard,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
@@ -65,7 +66,7 @@ const Sidebar = () => {
               <>
                 <NavItem
                   to="/manager"
-                  icon={<Home />}
+                  icon={<LayoutDashboard />}
                   label="Dashboard"
                   collapsed={sidebarCollapsed}
                 />
