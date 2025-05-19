@@ -29,11 +29,11 @@ const LanguageSwitcher = ({ collapsed }: { collapsed: boolean }) => {
   }, [isOpen]);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className={`relative ${collapsed ? "" : "p-2"}`} ref={dropdownRef}>
       <div className="">
         <div className="flex">
           <button
-            className="flex-1  h-14 w-14 p-3 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
+            className="rounded-md flex-1 px-3 py-2.5 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
             aria-label="Select language"
             onClick={() => setIsOpen(!isOpen)}
           >
@@ -48,7 +48,10 @@ const LanguageSwitcher = ({ collapsed }: { collapsed: boolean }) => {
         </div>
       </div>
       {isOpen && (
-        <div className="fixed left-0 bottom-48 z-50 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 dark:ring-gray-700 ">
+        <div
+          className={`fixed left-0 z-50 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 dark:ring-gray-700 
+      ${collapsed ? "bottom-36" : "bottom-40"}`}
+        >
           <div className="py-1">
             {languages.map((lang) => (
               <button

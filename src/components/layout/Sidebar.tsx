@@ -20,8 +20,7 @@ import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const { user, logout } = useAuth();
-  const { sidebarCollapsed, toggleSidebar, isDarkMode, toggleTheme } =
-    useTheme();
+  const { sidebarCollapsed, toggleSidebar, theme, toggleTheme } = useTheme();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -45,7 +44,9 @@ const Sidebar = () => {
         </div>
 
         {/* Sidebar navigation */}
-        <div className="flex-1 overflow-y-auto p-4">
+        <div
+          className={`flex-1 overflow-y-auto ${sidebarCollapsed ? "" : "p-2"}`}
+        >
           <nav className="space-y-1">
             {user?.role === "owner" ? (
               <>
@@ -110,48 +111,25 @@ const Sidebar = () => {
             />
           </nav>
         </div>
+        <div className="space-y-1">
+          <LanguageSwitcher collapsed={sidebarCollapsed} />
 
-        <LanguageSwitcher collapsed={sidebarCollapsed} />
+          {/* Theme and Collapse buttons */}
+          <ThemeCollapseButtons
+            sidebarCollapsed={sidebarCollapsed}
+            toggleSidebar={toggleSidebar}
+            theme={theme}
+            toggleTheme={toggleTheme}
+          />
 
-        {/* Theme and Collapse buttons */}
-        <div className="">
-          <div className="flex">
-            <button
-              onClick={toggleSidebar}
-              className="flex-1 p-3 flex items-center justify-center border-l border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            >
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700">
-                <ChevronLeft
-                  className={`h-4 w-4 text-gray-600 dark:text-gray-300 transition-transform duration-200 ${
-                    sidebarCollapsed ? "rotate-180" : ""
-                  }`}
-                />
-              </div>
-            </button>
-            {!sidebarCollapsed && (
-              <button
-                onClick={toggleTheme}
-                className="flex-1 p-3 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              >
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700">
-                  {isDarkMode ? (
-                    <Sun className="h-4 w-4 text-gray-600 dark:text-gray-300" />
-                  ) : (
-                    <Moon className="h-4 w-4 text-gray-600 dark:text-gray-300" />
-                  )}
-                </div>
-              </button>
-            )}
-          </div>
+          <UserInfo
+            user={user}
+            sidebarCollapsed={sidebarCollapsed}
+            isUserMenuOpen={isUserMenuOpen}
+            setIsUserMenuOpen={setIsUserMenuOpen}
+            handleLogout={handleLogout}
+          />
         </div>
-
-        <UserInfo
-          user={user}
-          sidebarCollapsed={sidebarCollapsed}
-          isUserMenuOpen={isUserMenuOpen}
-          setIsUserMenuOpen={setIsUserMenuOpen}
-          handleLogout={handleLogout}
-        />
       </div>
     </aside>
   );
@@ -236,7 +214,7 @@ const UserInfo = ({
         onClick={() => {
           setIsUserMenuOpen(!isUserMenuOpen);
         }}
-        className="flex-1 h-14 w-14 p-3 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
+        className="rounded-md flex-1 h-14 w-14 p-3 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
       >
         <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
           {user?.name.charAt(0)}
@@ -265,6 +243,47 @@ const UserInfo = ({
           </button>
         </div>
       </div>
+    )}
+  </div>
+);
+
+const ThemeCollapseButtons = ({
+  sidebarCollapsed,
+  toggleSidebar,
+  theme,
+  toggleTheme,
+}: {
+  sidebarCollapsed: boolean;
+  toggleSidebar: () => void;
+  theme: string;
+  toggleTheme: () => void;
+}) => (
+  <div className="flex">
+    <button
+      onClick={toggleSidebar}
+      className="rounded-md flex-1 px-3 py-2 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+    >
+      <div className="flex items-center justify-center w-5 h-5 rounded-full bg-gray-100 dark:bg-gray-700">
+        <ChevronLeft
+          className={`h-4 w-4 text-gray-600 dark:text-gray-300 transition-transform duration-200 ${
+            sidebarCollapsed ? "rotate-180" : ""
+          }`}
+        />
+      </div>
+    </button>
+    {!sidebarCollapsed && (
+      <button
+        onClick={toggleTheme}
+        className="rounded-md flex-1 px-3 py-2 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+      >
+        <div className="flex items-center justify-center w-5 h-5 rounded-full bg-gray-100 dark:bg-gray-700">
+          {theme === "dark" ? (
+            <Sun className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+          ) : (
+            <Moon className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+          )}
+        </div>
+      </button>
     )}
   </div>
 );
