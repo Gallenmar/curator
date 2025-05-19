@@ -113,7 +113,7 @@ const Sidebar = () => {
         <LanguageSwitcher collapsed={sidebarCollapsed} />
 
         {/* Theme and Collapse buttons */}
-        <div className="border-t border-gray-200 dark:border-gray-700">
+        <div className="">
           <div className="flex">
             <button
               onClick={toggleSidebar}
