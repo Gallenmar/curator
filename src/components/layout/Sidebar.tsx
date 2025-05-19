@@ -8,21 +8,31 @@ import {
   ChevronLeft,
   Sun,
   Moon,
+  LogOut,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import Meter from "../../../public/meter.svg";
 import LanguageSwitcher from "../ui/LanguageSwitcher";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { sidebarCollapsed, toggleSidebar, isDarkMode, toggleTheme } =
     useTheme();
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <aside
       className={`h-full border-r border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 transition-all duration-300 ${
-        sidebarCollapsed ? "w-16" : "w-64"
+        sidebarCollapsed ? "w-16" : "w-48"
       }`}
     >
       <div className="flex h-full flex-col">
@@ -134,26 +144,13 @@ const Sidebar = () => {
           </div>
         </div>
 
-        {/* User info and collapse button at bottom */}
-        <div className="border-t border-gray-200 dark:border-gray-700">
-          <div className="p-4">
-            <div className="flex items-center">
-              <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-                {user?.name.charAt(0)}
-              </div>
-              {!sidebarCollapsed && (
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {user?.name}
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">
-                    {user?.role}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        <UserInfo
+          user={user}
+          sidebarCollapsed={sidebarCollapsed}
+          isUserMenuOpen={isUserMenuOpen}
+          setIsUserMenuOpen={setIsUserMenuOpen}
+          handleLogout={handleLogout}
+        />
       </div>
     </aside>
   );
@@ -213,5 +210,62 @@ const NavItem = ({
     </NavLink>
   );
 };
+
+interface UserInfoProps {
+  user: {
+    name: string;
+    role: string;
+  } | null;
+  sidebarCollapsed: boolean;
+  isUserMenuOpen: boolean;
+  setIsUserMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleLogout: () => void;
+}
+
+const UserInfo = ({
+  user,
+  sidebarCollapsed,
+  isUserMenuOpen,
+  setIsUserMenuOpen,
+  handleLogout,
+}: UserInfoProps) => (
+  <div className="relative">
+    <div className="flex">
+      <button
+        onClick={() => {
+          setIsUserMenuOpen(!isUserMenuOpen);
+        }}
+        className="flex-1 h-14 w-14 p-3 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
+      >
+        <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+          {user?.name.charAt(0)}
+        </div>
+        {!sidebarCollapsed && (
+          <span className="pl-2 text-sm font-medium">{user?.name}</span>
+        )}
+      </button>
+    </div>
+    {isUserMenuOpen && (
+      <div className="fixed left-0 bottom-16 z-50 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 dark:ring-gray-700">
+        <div className="py-1">
+          <NavLink
+            to="/settings"
+            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+          >
+            <Settings className="mr-2 h-4 w-4" />
+            Settings
+          </NavLink>
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            Logout
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+);
 
 export default Sidebar;
