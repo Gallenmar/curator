@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
   Home,
@@ -13,6 +12,7 @@ import {
 import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import Meter from "../../../public/meter.svg";
+import LanguageSwitcher from "../ui/LanguageSwitcher";
 
 const Sidebar = () => {
   const { user } = useAuth();
@@ -99,6 +99,8 @@ const Sidebar = () => {
             />
           </nav>
         </div>
+
+        <LanguageSwitcher collapsed={sidebarCollapsed} />
 
         {/* Theme and Collapse buttons */}
         <div className="border-t border-gray-200 dark:border-gray-700">
