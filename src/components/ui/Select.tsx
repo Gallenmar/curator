@@ -30,7 +30,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           <select
             ref={ref}
             className={`
-              block w-full rounded-md shadow-sm appearance-none transition-colors
+             p-1 block w-full rounded-md shadow-sm appearance-none transition-colors
               ${
                 error
                   ? "border-red-500 focus:border-red-500 focus:ring-red-500"
@@ -54,7 +54,9 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
 
         {(error || helperText) && (
           <p
-            className={`mt-1 text-sm ${error ? "text-red-600" : "text-gray-500 dark:text-gray-400"}`}
+            className={`mt-1 text-sm ${
+              error ? "text-red-600" : "text-gray-500 dark:text-gray-400"
+            }`}
           >
             {error || helperText}
           </p>

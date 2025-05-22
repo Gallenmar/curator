@@ -34,7 +34,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             className={`
-              block w-full rounded-md shadow-sm transition-colors
+              p-1 block w-full rounded-md shadow-sm transition-colors
               ${
                 error
                   ? "border-red-500 focus:border-red-500 focus:ring-red-500"
@@ -56,7 +56,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
         {(error || helperText) && (
           <p
-            className={`mt-1 text-sm ${error ? "text-red-600" : "text-gray-500 dark:text-gray-400"}`}
+            className={`mt-1 text-sm ${
+              error ? "text-red-600" : "text-gray-500 dark:text-gray-400"
+            }`}
           >
             {error || helperText}
           </p>
