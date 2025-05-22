@@ -15,8 +15,9 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import Meter from "../../../public/meter.svg";
 import LanguageSwitcher from "../ui/LanguageSwitcher";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useClickOutside } from "../../hooks/useClickOutside";
 
 const Sidebar = () => {
   const { user, logout } = useAuth();
@@ -207,45 +208,54 @@ const UserInfo = ({
   isUserMenuOpen,
   setIsUserMenuOpen,
   handleLogout,
-}: UserInfoProps) => (
-  <div className="relative">
-    <div className="flex">
-      <button
-        onClick={() => {
-          setIsUserMenuOpen(!isUserMenuOpen);
-        }}
-        className="rounded-md flex-1 h-14 w-14 p-3 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
-      >
-        <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-          {user?.name.charAt(0)}
-        </div>
-        {!sidebarCollapsed && (
-          <span className="pl-2 text-sm font-medium">{user?.name}</span>
-        )}
-      </button>
-    </div>
-    {isUserMenuOpen && (
-      <div className="fixed left-0 bottom-16 z-50 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 dark:ring-gray-700">
-        <div className="py-1">
-          <NavLink
-            to="/settings"
-            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-          >
-            <Settings className="mr-2 h-4 w-4" />
-            Settings
-          </NavLink>
-          <button
-            onClick={handleLogout}
-            className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-          >
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </button>
-        </div>
+}: UserInfoProps) => {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(dropdownRef, () => setIsUserMenuOpen(false), isUserMenuOpen);
+
+  return (
+    <div className="relative">
+      <div className="flex">
+        <button
+          onClick={() => {
+            setIsUserMenuOpen(!isUserMenuOpen);
+          }}
+          className="rounded-md flex-1 h-14 w-14 p-3 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
+        >
+          <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+            {user?.name.charAt(0)}
+          </div>
+          {!sidebarCollapsed && (
+            <span className="pl-2 text-sm font-medium">{user?.name}</span>
+          )}
+        </button>
       </div>
-    )}
-  </div>
-);
+      {isUserMenuOpen && (
+        <div
+          ref={dropdownRef}
+          className="fixed left-0 bottom-16 z-50 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 dark:ring-gray-700"
+        >
+          <div className="py-1">
+            <NavLink
+              to="/settings"
+              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+            >
+              <Settings className="mr-2 h-4 w-4" />
+              Settings
+            </NavLink>
+            <button
+              onClick={handleLogout}
+              className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              Logout
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const ThemeCollapseButtons = ({
   sidebarCollapsed,

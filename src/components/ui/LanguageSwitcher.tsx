@@ -1,32 +1,14 @@
 import { Languages } from "lucide-react";
 import { languages, useLanguage } from "../../contexts/LanguageContext";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
+import { useClickOutside } from "../../hooks/useClickOutside";
 
 const LanguageSwitcher = ({ collapsed }: { collapsed: boolean }) => {
   const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen]);
+  useClickOutside(dropdownRef, () => setIsOpen(false), isOpen);
 
   return (
     <div className={`relative ${collapsed ? "" : "p-2"}`} ref={dropdownRef}>
