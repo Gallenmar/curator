@@ -17,6 +17,7 @@ import ManagerUsers from "./pages/manager/ManagerUsers";
 import ManagerBuildings from "./pages/manager/ManagerBuildings";
 import AccountSettings from "./pages/AccountSettings";
 import NotFound from "./pages/NotFound";
+import ManagerMeters from "./pages/manager/ManagerMeters";
 
 function App() {
   return (
@@ -75,6 +76,14 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={["manager"]}>
                     <ManagerBuildings />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/manager/meters"
+                element={
+                  <ProtectedRoute allowedRoles={["manager"]}>
+                    <ManagerMeters />
                   </ProtectedRoute>
                 }
               />

@@ -80,6 +80,13 @@ const Sidebar = () => {
                   collapsed={sidebarCollapsed}
                 />
                 <NavItem
+                  icon={<Building2 />}
+                  to="/manager/apartments"
+                  label="All Apartments"
+                  subItem
+                  collapsed={sidebarCollapsed}
+                />
+                <NavItem
                   icon={
                     <img
                       src={Meter}
@@ -87,7 +94,7 @@ const Sidebar = () => {
                       className="w-5 h-5 flex-shrink-0"
                     />
                   }
-                  to="/manager/apartments"
+                  to="/manager/meters"
                   label="Water Meters"
                   subItem
                   collapsed={sidebarCollapsed}
@@ -97,7 +104,6 @@ const Sidebar = () => {
                   to="/manager/users"
                   label="All Users"
                   subItem
-                  preventDefault
                   collapsed={sidebarCollapsed}
                 />
               </>
