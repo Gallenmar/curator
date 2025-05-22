@@ -206,7 +206,7 @@ function Table<T>({
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
                     </svg>
-                    <span className="ml-2">Loading...</span>
+                    <span className="ml-2 dark:text-white">Loading...</span>
                   </div>
                 </td>
               </tr>
@@ -228,7 +228,9 @@ function Table<T>({
                   {columns.map((column, index) => (
                     <td
                       key={index}
-                      className={`px-6 py-4 whitespace-nowrap ${column.className || ""}`}
+                      className={`px-6 py-4 whitespace-nowrap dark:text-white ${
+                        column.className || ""
+                      }`}
                     >
                       {typeof column.accessor === "string"
                         ? String(row[column.accessor])
