@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Menu, Bell, Settings, LogOut, Moon, Sun, Search } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
-import LanguageSwitcher from "../ui/LanguageSwitcher";
+import LanguageSwitcher from "../languageSwitcher/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 
 const Navbar = () => {

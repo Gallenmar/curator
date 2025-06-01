@@ -14,7 +14,7 @@ import {
 import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import Meter from "../../../public/meter.svg";
-import LanguageSwitcher from "../ui/LanguageSwitcher";
+import LanguageSwitcher from "../languageSwitcher/LanguageSwitcher";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useClickOutside } from "../../hooks/useClickOutside";

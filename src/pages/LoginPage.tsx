@@ -4,6 +4,7 @@ import { Droplet, User, Lock } from "lucide-react";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { useAuth } from "../contexts/AuthContext";
+import RelativeSwitcher from "../components/languageSwitcher/relativeSwitcher";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -46,10 +47,13 @@ const LoginPage = () => {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
           {/* Header */}
           <div className="p-6 sm:p-8 bg-blue-600 dark:bg-blue-800">
-            <div className="flex items-center justify-center mb-4">
-              <div className="p-2 bg-white rounded-full">
-                <Droplet className="h-7 w-7 text-blue-600" />
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                <div className="p-2 bg-white rounded-full">
+                  <Droplet className="h-7 w-7 text-blue-600" />
+                </div>
               </div>
+              <RelativeSwitcher collapsed={false} />
             </div>
             <h1 className="text-2xl font-bold text-center text-white">
               WaterMeter Manager
