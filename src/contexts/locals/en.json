@@ -1,0 +1,19 @@
+{
+  "welcome": "Welcome",
+  "dashboard": "Dashboard",
+  "readings": "Readings",
+  "settings": "Settings",
+  "buildings": "Buildings",
+  "apartments": "Apartments",
+  "users": "Users",
+  "logout": "Logout",
+  "submit": "Submit",
+  "cancel": "Cancel",
+  "search": "Search",
+  "loading": "Loading",
+  "error": "Error",
+  "success": "Success",
+  "waterMeterReadings": "Water Meter Readings",
+  "currentStatus": "Here's the current status of your water consumption",
+  "overview": "Overview of all buildings and water consumption"
+}

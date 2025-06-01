@@ -8,7 +8,9 @@ import {
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
-
+import en from "./locals/en.json";
+import lv from "./locals/lv.json";
+import ru from "./locals/ru.json";
 // Define available languages
 export const languages = [
   { code: "en", name: "English" },
@@ -19,58 +21,13 @@ export const languages = [
 // Translations
 const resources = {
   en: {
-    translation: {
-      welcome: "Welcome",
-      dashboard: "Dashboard",
-      readings: "Readings",
-      settings: "Settings",
-      buildings: "Buildings",
-      apartments: "Apartments",
-      users: "Users",
-      logout: "Logout",
-      submit: "Submit",
-      cancel: "Cancel",
-      search: "Search",
-      loading: "Loading",
-      error: "Error",
-      success: "Success",
-    },
+    translation: en,
   },
   lv: {
-    translation: {
-      welcome: "Laipni lūdzam",
-      dashboard: "Pārskats",
-      readings: "Rādījumi",
-      settings: "Iestatījumi",
-      buildings: "Ēkas",
-      apartments: "Dzīvokļi",
-      users: "Lietotāji",
-      logout: "Iziet",
-      submit: "Iesniegt",
-      cancel: "Atcelt",
-      search: "Meklēt",
-      loading: "Ielādē",
-      error: "Kļūda",
-      success: "Veiksmīgi",
-    },
+    translation: lv,
   },
   ru: {
-    translation: {
-      welcome: "Добро пожаловать",
-      dashboard: "Панель управления",
-      readings: "Показания",
-      settings: "Настройки",
-      buildings: "Здания",
-      apartments: "Квартиры",
-      users: "Пользователи",
-      logout: "Выйти",
-      submit: "Отправить",
-      cancel: "Отмена",
-      search: "Поиск",
-      loading: "Загрузка",
-      error: "Ошибка",
-      success: "Успешно",
-    },
+    translation: ru,
   },
 };
 

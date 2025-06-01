@@ -7,6 +7,7 @@ import MeterReadingForm from "../../components/meter/MeterReadingForm";
 import StatCard from "../../components/dashboard/StatCard";
 import { useAuth } from "../../contexts/AuthContext";
 import { Droplet, TrendingUp, Home, AlertCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 // Mock data
 const mockReadingsData = {
@@ -31,6 +32,7 @@ const mockReadingsData = {
 
 const OwnerDashboard = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [showReadingForm, setShowReadingForm] = useState(false);
 
   // State for summary data
@@ -84,10 +86,10 @@ const OwnerDashboard = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Welcome, {user?.name}
+              {t("welcome")}, {user?.name}
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
-              Here's the current status of your water consumption
+              {t("currentStatus")}
             </p>
           </div>
 

@@ -1,0 +1,19 @@
+{
+  "welcome": "Laipni lūdzam",
+  "dashboard": "Pārskats",
+  "readings": "Rādījumi",
+  "settings": "Iestatījumi",
+  "buildings": "Ēkas",
+  "apartments": "Dzīvokļi",
+  "users": "Lietotāji",
+  "logout": "Iziet",
+  "submit": "Iesniegt",
+  "cancel": "Atcelt",
+  "search": "Meklēt",
+  "loading": "Ielādē",
+  "error": "Kļūda",
+  "success": "Veiksmīgi",
+  "waterMeterReadings": "Ūdens skaitītāju rādījumi",
+  "currentStatus": "Šeit ir jūsu ūdens patēriņa pašreizējais stāvoklis",
+  "overview": "Visu ēku un ūdens patēriņa pārskats"
+}

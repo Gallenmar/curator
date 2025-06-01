@@ -3,6 +3,7 @@ import Layout from "../../components/layout/Layout";
 import ReadingHistoryTable from "../../components/meter/ReadingHistoryTable";
 import Card from "../../components/ui/Card";
 import LineChart from "../../components/charts/LineChart";
+import { useTranslation } from "react-i18next";
 
 // Mock data for demonstration
 const mockReadings = [
@@ -87,6 +88,7 @@ const prepareChartData = (readings: typeof mockReadings) => {
 };
 
 const OwnerReadings = () => {
+  const { t } = useTranslation();
   const [readings, setReadings] = useState<typeof mockReadings>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [chartData, setChartData] = useState(prepareChartData([]));
@@ -156,7 +158,7 @@ const OwnerReadings = () => {
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Water Meter Readings
+            {t("waterMeterReadings")}
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
             View and manage your water meter readings history

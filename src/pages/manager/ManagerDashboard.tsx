@@ -12,6 +12,8 @@ import Card from "../../components/ui/Card";
 import Select from "../../components/ui/Select";
 import LineChart from "../../components/charts/LineChart";
 import Table from "../../components/ui/Table";
+import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 // Mock data
 const mockBuildings = [
@@ -97,6 +99,8 @@ const ManagerDashboard = () => {
     submittedReadings: 0,
     averageConsumption: 0,
   });
+  const { t } = useTranslation();
+  const { user } = useAuth();
 
   // Load statistics based on selected building
   useEffect(() => {
@@ -195,11 +199,9 @@ const ManagerDashboard = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Manager Dashboard
+              {t("welcome")}, {user?.name}
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
-              Overview of all buildings and water consumption
-            </p>
+            <p className="text-gray-600 dark:text-gray-400">{t("overview")}</p>
           </div>
 
           <div className="w-full md:w-64">
@@ -226,7 +228,9 @@ const ManagerDashboard = () => {
 
           <StatCard
             title="Occupancy"
-            value={`${Math.round((stats.occupiedApartments / stats.totalApartments) * 100)}%`}
+            value={`${Math.round(
+              (stats.occupiedApartments / stats.totalApartments) * 100
+            )}%`}
             change={{ value: 2, trend: "up" }}
             icon={
               <Users className="h-6 w-6 text-blue-600 dark:text-blue-400" />
@@ -236,7 +240,9 @@ const ManagerDashboard = () => {
 
           <StatCard
             title="Submitted Readings"
-            value={`${Math.round((stats.submittedReadings / stats.occupiedApartments) * 100)}%`}
+            value={`${Math.round(
+              (stats.submittedReadings / stats.occupiedApartments) * 100
+            )}%`}
             change={{ value: 5, trend: "up" }}
             icon={
               <Droplet className="h-6 w-6 text-green-600 dark:text-green-400" />
