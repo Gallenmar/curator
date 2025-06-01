@@ -5,11 +5,13 @@ import {
   useEffect,
   ReactNode,
 } from "react";
+import authApi from "../store/features/auth/api";
 
 // Define types for our context
 interface User {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   role: "owner" | "manager";
 }
@@ -25,68 +27,67 @@ interface AuthContextType {
 // Create the context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Sample users for demo purposes (replace with API in production)
-const mockUsers = [
-  {
-    id: "1",
-    name: "John Owner",
-    email: "owner@example.com",
-    password: "password",
-    role: "owner" as const,
-  },
-  {
-    id: "2",
-    name: "Jane Manager",
-    email: "manager@example.com",
-    password: "password",
-    role: "manager" as const,
-  },
-];
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // useEffect(() => {
+  //   // Check if user is stored in localStorage
+  //   const storedUser = localStorage.getItem("user");
+  //   const storedToken = localStorage.getItem("authToken");
+  //   // todo check this logic
+  //   if (storedUser && storedToken) {
+  //     setUser(JSON.parse(storedUser));
+  //   }
+  //   setIsLoading(false);
+  // }, []);
+
   useEffect(() => {
-    // Check if user is stored in localStorage
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
     setIsLoading(false);
   }, []);
+
+  useEffect(() => {
+    console.log("user", user);
+  }, [user]);
 
   const login = async (
     email: string,
     password: string
   ): Promise<User | null> => {
     setIsLoading(true);
+    try {
+      const response = await authApi.login(email, password);
 
-    // Simulate API call with timeout
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const foundUser = mockUsers.find(
-          (u) => u.email === email && u.password === password
-        );
+      const { user, token } = response;
 
-        if (foundUser) {
-          // Remove password before storing user
-          const { password, ...userWithoutPassword } = foundUser;
-          setUser(userWithoutPassword);
-          localStorage.setItem("user", JSON.stringify(userWithoutPassword));
-          setIsLoading(false);
-          resolve(userWithoutPassword);
-        } else {
-          setIsLoading(false);
-          resolve(null);
-        }
-      }, 800);
-    });
+      // todo fox types for cases
+      const userInfo = {
+        id: user.id,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.email,
+        role: user.role,
+      };
+
+      console.log("userInfo", userInfo);
+
+      localStorage.setItem("user", JSON.stringify(userInfo));
+      localStorage.setItem("authToken", token);
+
+      setUser(userInfo);
+      setIsLoading(false);
+      return userInfo;
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Login failed:", error);
+      return null;
+    }
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("authToken");
   };
 
   return (

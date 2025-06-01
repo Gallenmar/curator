@@ -82,14 +82,14 @@ const LoginPage = () => {
             <form onSubmit={handleSubmit} className="mt-6 space-y-5">
               <Input
                 id="email"
-                type="email"
+                type="text"
                 label="Email"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 leftIcon={<User className="h-5 w-5 text-gray-400" />}
-                autoComplete="email"
+                autoComplete="text"
               />
 
               <Input

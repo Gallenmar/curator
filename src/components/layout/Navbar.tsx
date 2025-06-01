@@ -115,9 +115,11 @@ const Navbar = () => {
             >
               <div className="flex items-center gap-2">
                 <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-                  {user?.name.charAt(0)}
+                  {user?.firstName.charAt(0)}
                 </div>
-                <span className="hidden md:block">{user?.name}</span>
+                <span className="hidden md:block">
+                  {user?.firstName} {user?.lastName}
+                </span>
               </div>
             </button>
 

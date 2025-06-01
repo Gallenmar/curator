@@ -199,7 +199,8 @@ const NavItem = ({
 
 interface UserInfoProps {
   user: {
-    name: string;
+    firstName: string;
+    lastName: string;
     role: string;
   } | null;
   sidebarCollapsed: boolean;
@@ -229,10 +230,12 @@ const UserInfo = ({
           className="rounded-md flex-1 h-14 w-14 p-3 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
         >
           <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-            {user?.name.charAt(0)}
+            {user?.firstName.charAt(0)}
           </div>
           {!sidebarCollapsed && (
-            <span className="pl-2 text-sm font-medium">{user?.name}</span>
+            <span className="pl-2 text-sm font-medium">
+              {user?.firstName} {user?.lastName}
+            </span>
           )}
         </button>
       </div>

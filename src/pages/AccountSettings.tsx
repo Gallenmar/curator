@@ -10,7 +10,8 @@ const AccountSettings = () => {
   const { user } = useAuth();
 
   const [profileData, setProfileData] = useState({
-    name: user?.name || "",
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
     email: user?.email || "",
   });
 
@@ -143,7 +144,7 @@ const AccountSettings = () => {
                 id="name"
                 name="name"
                 label="Full Name"
-                value={profileData.name}
+                value={profileData.firstName + " " + profileData.lastName}
                 onChange={handleProfileChange}
                 leftIcon={<User className="h-5 w-5 text-gray-400" />}
               />
