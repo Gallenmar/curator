@@ -3,7 +3,7 @@ import { useClickOutside } from "../../hooks/useClickOutside";
 import LanguageButton from "./LanguageButton";
 import LanguageDropdown from "./LanguageDropdown";
 
-const RelativeSwitcher = ({ collapsed }) => {
+const RelativeSwitcher = ({ collapsed }: { collapsed: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 

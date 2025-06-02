@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Plus, User, Mail, UserCog, Key, ChevronRight } from "lucide-react";
+import { Plus, Mail, UserCog, Key, ChevronRight } from "lucide-react";
 import Layout from "../../components/layout/Layout";
 import Button from "../../components/ui/Button";
 import Table from "../../components/ui/Table";
@@ -9,7 +9,8 @@ import Select from "../../components/ui/Select";
 
 interface UserData {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   role: "owner" | "manager";
   apartments: string[];
@@ -21,7 +22,8 @@ interface UserData {
 const mockUsers: UserData[] = [
   {
     id: "1",
-    name: "John Smith",
+    firstName: "John",
+    lastName: "Smith",
     email: "john@example.com",
     role: "owner",
     apartments: ["Apt 101, Oak Residences"],
@@ -30,7 +32,8 @@ const mockUsers: UserData[] = [
   },
   {
     id: "2",
-    name: "Emily Johnson",
+    firstName: "Emily",
+    lastName: "Johnson",
     email: "emily@example.com",
     role: "owner",
     apartments: ["Apt 102, Oak Residences"],
@@ -39,7 +42,8 @@ const mockUsers: UserData[] = [
   },
   {
     id: "3",
-    name: "Michael Brown",
+    firstName: "Michael",
+    lastName: "Brown",
     email: "michael@example.com",
     role: "owner",
     apartments: ["Apt 205, Maple Apartments"],
@@ -48,7 +52,8 @@ const mockUsers: UserData[] = [
   },
   {
     id: "4",
-    name: "Sarah Wilson",
+    firstName: "Sarah",
+    lastName: "Wilson",
     email: "sarah@example.com",
     role: "owner",
     apartments: ["Apt 301, Pine Heights"],
@@ -57,7 +62,8 @@ const mockUsers: UserData[] = [
   },
   {
     id: "5",
-    name: "Robert Davis",
+    firstName: "Robert",
+    lastName: "Davis",
     email: "robert@example.com",
     role: "owner",
     apartments: ["Apt 103, Oak Residences"],
@@ -66,7 +72,8 @@ const mockUsers: UserData[] = [
   },
   {
     id: "6",
-    name: "Jane Manager",
+    firstName: "Jane",
+    lastName: "Manager",
     email: "jane@example.com",
     role: "manager",
     apartments: ["All buildings"],
@@ -111,7 +118,8 @@ const ManagerUsers = () => {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(
         (user) =>
-          user.name.toLowerCase().includes(term) ||
+          user.firstName.toLowerCase().includes(term) ||
+          user.lastName.toLowerCase().includes(term) ||
           user.email.toLowerCase().includes(term) ||
           user.apartments.some((apt) => apt.toLowerCase().includes(term))
       );
@@ -169,11 +177,11 @@ const ManagerUsers = () => {
       accessor: (row: UserData) => (
         <div className="flex items-center">
           <div className="h-9 w-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
-            {row.name.charAt(0)}
+            {row.firstName.charAt(0)}
           </div>
           <div className="ml-3">
             <div className="font-medium text-gray-900 dark:text-white">
-              {row.name}
+              {row.firstName} {row.lastName}
             </div>
             <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
               <Mail className="mr-1 h-3 w-3" /> {row.email}
@@ -222,7 +230,9 @@ const ManagerUsers = () => {
 
         return (
           <span
-            className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[row.status]}`}
+            className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
+              statusColors[row.status]
+            }`}
           >
             {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
           </span>

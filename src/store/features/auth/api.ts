@@ -1,10 +1,9 @@
-import baseApi from "../../baseApi"; // Adjust path as needed
+import baseApi from "../../baseApi";
 
-// todo dry the types
 interface User {
   id: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   role: "owner" | "manager";
 }
@@ -16,10 +15,9 @@ interface LoginResponse {
 }
 
 const authApi = {
-  login: async (email: string, password: string) => {
+  login: async (username: string, password: string) => {
     const response = await baseApi<LoginResponse>("POST", "/auth/token", {
-      // todo pass email or username
-      body: JSON.stringify({ username: email, password }),
+      body: JSON.stringify({ username, password }),
     });
     return response.data;
   },

@@ -4,10 +4,10 @@ import { Droplet, User, Lock } from "lucide-react";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { useAuth } from "../contexts/AuthContext";
-import RelativeSwitcher from "../components/languageSwitcher/relativeSwitcher";
+import RelativeSwitcher from "../components/languageSwitcher/RelativeSwitcher.tsx";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +21,7 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      const loggedInUser = await login(email, password);
+      const loggedInUser = await login(username, password);
       if (loggedInUser) {
         if (loggedInUser.role === "owner") {
           navigate("/owner");
@@ -31,7 +31,7 @@ const LoginPage = () => {
           navigate("/");
         }
       } else {
-        setError("Invalid email or password");
+        setError("Invalid username or password");
       }
     } catch (err) {
       setError("An error occurred during login. Please try again.");
@@ -81,15 +81,15 @@ const LoginPage = () => {
 
             <form onSubmit={handleSubmit} className="mt-6 space-y-5">
               <Input
-                id="email"
+                id="username"
                 type="text"
-                label="Email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                label="Username"
+                placeholder="Enter your username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
                 leftIcon={<User className="h-5 w-5 text-gray-400" />}
-                autoComplete="text"
+                autoComplete="username"
               />
 
               <Input

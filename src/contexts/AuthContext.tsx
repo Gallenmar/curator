@@ -31,36 +31,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // useEffect(() => {
-  //   // Check if user is stored in localStorage
-  //   const storedUser = localStorage.getItem("user");
-  //   const storedToken = localStorage.getItem("authToken");
-  //   // todo check this logic
-  //   if (storedUser && storedToken) {
-  //     setUser(JSON.parse(storedUser));
-  //   }
-  //   setIsLoading(false);
-  // }, []);
-
   useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    const storedToken = localStorage.getItem("authToken");
+    if (storedUser && storedToken) {
+      setUser(JSON.parse(storedUser));
+    }
     setIsLoading(false);
   }, []);
 
-  useEffect(() => {
-    console.log("user", user);
-  }, [user]);
-
   const login = async (
-    email: string,
+    username: string,
     password: string
   ): Promise<User | null> => {
     setIsLoading(true);
     try {
-      const response = await authApi.login(email, password);
+      const response = await authApi.login(username, password);
 
       const { user, token } = response;
 
-      // todo fox types for cases
       const userInfo = {
         id: user.id,
         firstName: user.first_name,
@@ -68,8 +57,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         email: user.email,
         role: user.role,
       };
-
-      console.log("userInfo", userInfo);
 
       localStorage.setItem("user", JSON.stringify(userInfo));
       localStorage.setItem("authToken", token);

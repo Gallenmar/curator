@@ -9,13 +9,8 @@ interface ApiResponse<T> {
   headers: Headers;
 }
 
-declare const process: {
-  env: {
-    REACT_APP_API_BASE_URL?: string;
-  };
-};
 // todo add env variable
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 async function baseApi<T>(
   method: string,
