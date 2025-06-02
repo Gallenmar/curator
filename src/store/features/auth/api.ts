@@ -16,9 +16,18 @@ interface LoginResponse {
 
 const authApi = {
   login: async (username: string, password: string) => {
-    const response = await baseApi<LoginResponse>("POST", "/auth/token", {
-      body: JSON.stringify({ username, password }),
-    });
+    const formData = new URLSearchParams();
+    formData.append("username", username);
+    formData.append("password", password);
+
+    const response = await baseApi<LoginResponse>(
+      "POST",
+      "/auth/token",
+      {
+        body: formData,
+      },
+      "formData"
+    );
     return response.data;
   },
 };

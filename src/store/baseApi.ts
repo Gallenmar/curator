@@ -9,30 +9,48 @@ interface ApiResponse<T> {
   headers: Headers;
 }
 
-// todo add env variable
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 async function baseApi<T>(
   method: string,
   endpoint: string,
-  config: RequestConfig = {}
+  config: RequestConfig = {},
+  requestType: "json" | "formData" = "json"
 ): Promise<ApiResponse<T>> {
-  const { baseURL = BASE_URL, headers = {}, ...customConfig } = config;
+  const { baseURL = BASE_URL, headers = {}, body, ...customConfig } = config;
 
   // Get auth token
   const token = localStorage.getItem("authToken");
 
   // Prepare headers
   const headersWithAuth = {
-    "Content-Type": "application/json",
+    "Content-Type":
+      requestType === "json"
+        ? "application/json"
+        : "application/x-www-form-urlencoded",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...headers,
   };
+
+  // Convert body to URLSearchParams if it exists
+  let formBody: string | undefined;
+  if (body && requestType === "formData") {
+    if (body instanceof URLSearchParams) {
+      formBody = body.toString();
+    } else if (typeof body === "object") {
+      const formData = new URLSearchParams();
+      Object.entries(body).forEach(([key, value]) => {
+        formData.append(key, String(value));
+      });
+      formBody = formData.toString();
+    }
+  }
 
   // Prepare request config
   const requestConfig: RequestInit = {
     ...customConfig,
     headers: headersWithAuth,
+    body: formBody,
   };
 
   const response = await fetch(`${baseURL}${endpoint}`, {
