@@ -36,14 +36,14 @@ const Layout = ({ children }: LayoutProps) => {
 };
 
 // Mobile navigation footer
-const MobileNavigation = ({ userRole }: { userRole?: "owner" | "manager" }) => {
+const MobileNavigation = ({ userRole }: { userRole?: "user" | "manager" }) => {
   return (
     <div className="border-t border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
       <div className="flex justify-around py-3">
-        {userRole === "owner" ? (
+        {userRole === "user" ? (
           <>
-            <NavItem href="/owner" icon="home" label="Dashboard" />
-            <NavItem href="/owner/readings" icon="droplet" label="Readings" />
+            <NavItem href="/user" icon="home" label="Dashboard" />
+            <NavItem href="/user/readings" icon="droplet" label="Readings" />
             <NavItem href="/settings" icon="settings" label="Settings" />
           </>
         ) : (

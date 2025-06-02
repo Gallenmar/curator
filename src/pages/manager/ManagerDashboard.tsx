@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Droplet,
-  Building2,
-  Users,
-  TrendingUp,
-  AlertCircle,
-} from "lucide-react";
+import { Droplet, Building2, Users, TrendingUp } from "lucide-react";
 import Layout from "../../components/layout/Layout";
 import StatCard from "../../components/dashboard/StatCard";
 import Card from "../../components/ui/Card";
@@ -56,12 +50,12 @@ const mockSubmissionStats = {
   ],
 };
 
-const mockApartmentsWithIssues = [
+const mockApartmentsWithIssues: IssueRow[] = [
   {
     id: "1",
     apartment: "Apt 101",
     building: "Oak Residences",
-    owner: "John Smith",
+    user: "John Smith",
     issue: "Missing reading",
     status: "pending",
   },
@@ -69,7 +63,7 @@ const mockApartmentsWithIssues = [
     id: "2",
     apartment: "Apt 203",
     building: "Maple Apartments",
-    owner: "Sarah Johnson",
+    user: "Sarah Johnson",
     issue: "Abnormal reading",
     status: "investigating",
   },
@@ -77,7 +71,7 @@ const mockApartmentsWithIssues = [
     id: "3",
     apartment: "Apt 305",
     building: "Pine Heights",
-    owner: "Michael Brown",
+    user: "Michael Brown",
     issue: "Late submission",
     status: "resolved",
   },
@@ -85,11 +79,20 @@ const mockApartmentsWithIssues = [
     id: "4",
     apartment: "Apt 407",
     building: "Oak Residences",
-    owner: "Emma Wilson",
+    user: "Emma Wilson",
     issue: "Meter malfunction",
     status: "maintenance",
   },
 ];
+
+interface IssueRow {
+  id: string;
+  apartment: string;
+  building: string;
+  user: string;
+  issue: string;
+  status: "pending" | "investigating" | "maintenance" | "resolved";
+}
 
 const ManagerDashboard = () => {
   const [selectedBuilding, setSelectedBuilding] = useState("all");
@@ -147,27 +150,27 @@ const ManagerDashboard = () => {
   const issueColumns = [
     {
       header: "Apartment",
-      accessor: "apartment",
+      accessor: (row: IssueRow) => row.apartment,
       sortable: true,
     },
     {
       header: "Building",
-      accessor: "building",
+      accessor: (row: IssueRow) => row.building,
       sortable: true,
     },
     {
-      header: "Owner",
-      accessor: "owner",
+      header: "User",
+      accessor: (row: IssueRow) => row.user,
       sortable: true,
     },
     {
       header: "Issue",
-      accessor: "issue",
+      accessor: (row: IssueRow) => row.issue,
       sortable: true,
     },
     {
       header: "Status",
-      accessor: (row: any) => {
+      accessor: (row: IssueRow) => {
         const statusColors = {
           pending:
             "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",

@@ -9,8 +9,8 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
-import OwnerDashboard from "./pages/owner/OwnerDashboard";
-import OwnerReadings from "./pages/owner/OwnerReadings";
+import UserDashboard from "./pages/user/UserDashboard";
+import UserReadings from "./pages/user/UserReadings";
 import ManagerDashboard from "./pages/manager/ManagerDashboard";
 import ManagerApartments from "./pages/manager/ManagerApartments";
 import ManagerUsers from "./pages/manager/ManagerUsers";
@@ -28,20 +28,20 @@ function App() {
             <Routes>
               <Route path="/login" element={<LoginPage />} />
 
-              {/* Owner Routes */}
+              {/* User Routes */}
               <Route
-                path="/owner"
+                path="/user"
                 element={
-                  <ProtectedRoute allowedRoles={["owner"]}>
-                    <OwnerDashboard />
+                  <ProtectedRoute allowedRoles={["user"]}>
+                    <UserDashboard />
                   </ProtectedRoute>
                 }
               />
               <Route
-                path="/owner/readings"
+                path="/user/readings"
                 element={
-                  <ProtectedRoute allowedRoles={["owner"]}>
-                    <OwnerReadings />
+                  <ProtectedRoute allowedRoles={["user"]}>
+                    <UserReadings />
                   </ProtectedRoute>
                 }
               />
@@ -92,7 +92,7 @@ function App() {
               <Route
                 path="/settings"
                 element={
-                  <ProtectedRoute allowedRoles={["owner", "manager"]}>
+                  <ProtectedRoute allowedRoles={["user", "manager"]}>
                     <AccountSettings />
                   </ProtectedRoute>
                 }

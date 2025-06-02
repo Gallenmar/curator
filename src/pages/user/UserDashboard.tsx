@@ -6,7 +6,7 @@ import LineChart from "../../components/charts/LineChart";
 import MeterReadingForm from "../../components/meter/MeterReadingForm";
 import StatCard from "../../components/dashboard/StatCard";
 import { useAuth } from "../../contexts/AuthContext";
-import { Droplet, TrendingUp, Home, AlertCircle } from "lucide-react";
+import { Droplet, Home, AlertCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 // Mock data
@@ -30,7 +30,7 @@ const mockReadingsData = {
   ],
 };
 
-const OwnerDashboard = () => {
+const UserDashboard = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
   const [showReadingForm, setShowReadingForm] = useState(false);
@@ -240,4 +240,4 @@ const NotificationItem = ({
   );
 };
 
-export default OwnerDashboard;
+export default UserDashboard;

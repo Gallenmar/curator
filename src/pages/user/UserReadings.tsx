@@ -87,7 +87,7 @@ const prepareChartData = (readings: typeof mockReadings) => {
   };
 };
 
-const OwnerReadings = () => {
+const UserReadings = () => {
   const { t } = useTranslation();
   const [readings, setReadings] = useState<typeof mockReadings>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -192,4 +192,4 @@ const OwnerReadings = () => {
   );
 };
 
-export default OwnerReadings;
+export default UserReadings;

@@ -49,16 +49,16 @@ const Sidebar = () => {
           className={`flex-1 overflow-y-auto ${sidebarCollapsed ? "" : "p-2"}`}
         >
           <nav className="space-y-1">
-            {user?.role === "owner" ? (
+            {user?.role === "user" ? (
               <>
                 <NavItem
-                  to="/owner"
+                  to="/user"
                   icon={<Home />}
                   label="Dashboard"
                   collapsed={sidebarCollapsed}
                 />
                 <NavItem
-                  to="/owner/readings"
+                  to="/user/readings"
                   icon={<Droplet />}
                   label="My Readings"
                   collapsed={sidebarCollapsed}

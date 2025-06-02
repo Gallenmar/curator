@@ -23,8 +23,8 @@ const LoginPage = () => {
     try {
       const loggedInUser = await login(username, password);
       if (loggedInUser) {
-        if (loggedInUser.role === "owner") {
-          navigate("/owner");
+        if (loggedInUser.role === "user") {
+          navigate("/user");
         } else if (loggedInUser.role === "manager") {
           navigate("/manager");
         } else {
@@ -137,8 +137,8 @@ const LoginPage = () => {
                 Demo credentials:
               </p>
               <div className="mt-2 space-y-1 text-xs text-gray-500 dark:text-gray-500">
-                <p>Owner: owner@example.com / password</p>
-                <p>Manager: manager@example.com / password</p>
+                <p>User: user / user123</p>
+                <p>Manager: manager / manager123</p>
               </div>
             </div>
           </div>

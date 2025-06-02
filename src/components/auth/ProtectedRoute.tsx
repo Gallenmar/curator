@@ -5,7 +5,7 @@ import LoadingScreen from "../ui/LoadingScreen";
 
 interface ProtectedRouteProps {
   children: ReactNode;
-  allowedRoles: ("owner" | "manager")[];
+  allowedRoles: ("user" | "manager")[];
 }
 
 const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {

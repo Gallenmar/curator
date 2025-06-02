@@ -26,8 +26,8 @@ interface Apartment {
   id: string;
   number: string;
   building: string;
-  owner: string;
-  ownerEmail: string;
+  user: string;
+  userEmail: string;
   lastReading: {
     date: string;
     hot: number;
@@ -41,8 +41,8 @@ const mockApartments: Apartment[] = [
     id: "1",
     number: "101",
     building: "Oak Residences",
-    owner: "John Smith",
-    ownerEmail: "john@example.com",
+    user: "John Smith",
+    userEmail: "john@example.com",
     lastReading: {
       date: "2025-04-10",
       hot: 36.5,
@@ -54,8 +54,8 @@ const mockApartments: Apartment[] = [
     id: "2",
     number: "102",
     building: "Oak Residences",
-    owner: "Emily Johnson",
-    ownerEmail: "emily@example.com",
+    user: "Emily Johnson",
+    userEmail: "emily@example.com",
     lastReading: {
       date: "2025-04-12",
       hot: 28.3,
@@ -67,8 +67,8 @@ const mockApartments: Apartment[] = [
     id: "3",
     number: "205",
     building: "Maple Apartments",
-    owner: "Michael Brown",
-    ownerEmail: "michael@example.com",
+    user: "Michael Brown",
+    userEmail: "michael@example.com",
     lastReading: {
       date: "2025-04-15",
       hot: 42.7,
@@ -80,8 +80,8 @@ const mockApartments: Apartment[] = [
     id: "4",
     number: "301",
     building: "Pine Heights",
-    owner: "Sarah Wilson",
-    ownerEmail: "sarah@example.com",
+    user: "Sarah Wilson",
+    userEmail: "sarah@example.com",
     lastReading: {
       date: "2025-04-08",
       hot: 31.9,
@@ -93,8 +93,8 @@ const mockApartments: Apartment[] = [
     id: "5",
     number: "302",
     building: "Pine Heights",
-    owner: "",
-    ownerEmail: "",
+    user: "",
+    userEmail: "",
     lastReading: {
       date: "",
       hot: 0,
@@ -106,8 +106,8 @@ const mockApartments: Apartment[] = [
     id: "6",
     number: "103",
     building: "Oak Residences",
-    owner: "Robert Davis",
-    ownerEmail: "robert@example.com",
+    user: "Robert Davis",
+    userEmail: "robert@example.com",
     lastReading: {
       date: "",
       hot: 0,
@@ -158,8 +158,8 @@ const ManagerApartments = () => {
         (apt) =>
           apt.number.toLowerCase().includes(term) ||
           apt.building.toLowerCase().includes(term) ||
-          apt.owner.toLowerCase().includes(term) ||
-          apt.ownerEmail.toLowerCase().includes(term)
+          apt.user.toLowerCase().includes(term) ||
+          apt.userEmail.toLowerCase().includes(term)
       );
     }
 
@@ -196,17 +196,17 @@ const ManagerApartments = () => {
     },
     {
       header: "Building",
-      accessor: "building",
+      accessor: (row: Apartment) => row.building,
       sortable: true,
     },
     {
-      header: "Owner",
+      header: "User",
       accessor: (row: Apartment) => (
         <div>
-          {row.owner ? (
+          {row.user ? (
             <>
-              <div className="font-medium">{row.owner}</div>
-              <div className="text-xs text-gray-500">{row.ownerEmail}</div>
+              <div className="font-medium">{row.user}</div>
+              <div className="text-xs text-gray-500">{row.userEmail}</div>
             </>
           ) : (
             <span className="text-gray-500">Not assigned</span>
@@ -256,7 +256,9 @@ const ManagerApartments = () => {
 
         return (
           <span
-            className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[row.status]}`}
+            className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
+              statusColors[row.status]
+            }`}
           >
             {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
           </span>
@@ -326,7 +328,7 @@ const ManagerApartments = () => {
             <Input
               id="search-filter"
               label="Search"
-              placeholder="Search apartments, owners..."
+              placeholder="Search apartments, users..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />

@@ -12,7 +12,7 @@ interface UserData {
   firstName: string;
   lastName: string;
   email: string;
-  role: "owner" | "manager";
+  role: "user" | "manager";
   apartments: string[];
   lastLogin: string;
   status: "active" | "inactive";
@@ -25,7 +25,7 @@ const mockUsers: UserData[] = [
     firstName: "John",
     lastName: "Smith",
     email: "john@example.com",
-    role: "owner",
+    role: "user",
     apartments: ["Apt 101, Oak Residences"],
     lastLogin: "2025-04-18T14:30:00",
     status: "active",
@@ -35,7 +35,7 @@ const mockUsers: UserData[] = [
     firstName: "Emily",
     lastName: "Johnson",
     email: "emily@example.com",
-    role: "owner",
+    role: "user",
     apartments: ["Apt 102, Oak Residences"],
     lastLogin: "2025-04-15T09:15:00",
     status: "active",
@@ -45,7 +45,7 @@ const mockUsers: UserData[] = [
     firstName: "Michael",
     lastName: "Brown",
     email: "michael@example.com",
-    role: "owner",
+    role: "user",
     apartments: ["Apt 205, Maple Apartments"],
     lastLogin: "2025-04-10T11:20:00",
     status: "inactive",
@@ -55,7 +55,7 @@ const mockUsers: UserData[] = [
     firstName: "Sarah",
     lastName: "Wilson",
     email: "sarah@example.com",
-    role: "owner",
+    role: "user",
     apartments: ["Apt 301, Pine Heights"],
     lastLogin: "2025-04-17T16:45:00",
     status: "active",
@@ -65,7 +65,7 @@ const mockUsers: UserData[] = [
     firstName: "Robert",
     lastName: "Davis",
     email: "robert@example.com",
-    role: "owner",
+    role: "user",
     apartments: ["Apt 103, Oak Residences"],
     lastLogin: "2025-04-05T08:30:00",
     status: "inactive",
@@ -300,7 +300,7 @@ const ManagerUsers = () => {
               label="Role"
               options={[
                 { value: "all", label: "All Roles" },
-                { value: "owner", label: "Owner" },
+                { value: "user", label: "User" },
                 { value: "manager", label: "Manager" },
               ]}
               value={roleFilter}

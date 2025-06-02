@@ -13,7 +13,7 @@ interface User {
   firstName: string;
   lastName: string;
   email: string;
-  role: "owner" | "manager";
+  role: "user" | "manager";
 }
 
 interface AuthContextType {
