@@ -26,7 +26,7 @@ interface WaterMeter {
     value: number;
   };
   status: "active" | "inactive" | "maintenance";
-  batteryLevel: number;
+  currentReading?: number;
 }
 
 const mockMeters: WaterMeter[] = [
@@ -41,7 +41,7 @@ const mockMeters: WaterMeter[] = [
       value: 36.5,
     },
     status: "active",
-    batteryLevel: 85,
+    currentReading: 38.2,
   },
   {
     id: "2",
@@ -54,7 +54,7 @@ const mockMeters: WaterMeter[] = [
       value: 58.2,
     },
     status: "active",
-    batteryLevel: 92,
+    currentReading: 61.5,
   },
   {
     id: "3",
@@ -67,7 +67,7 @@ const mockMeters: WaterMeter[] = [
       value: 28.3,
     },
     status: "maintenance",
-    batteryLevel: 15,
+    currentReading: 29.1,
   },
   {
     id: "4",
@@ -80,7 +80,7 @@ const mockMeters: WaterMeter[] = [
       value: 67.8,
     },
     status: "active",
-    batteryLevel: 78,
+    currentReading: 70.3,
   },
   {
     id: "5",
@@ -93,7 +93,7 @@ const mockMeters: WaterMeter[] = [
       value: 31.9,
     },
     status: "inactive",
-    batteryLevel: 0,
+    currentReading: 32.4,
   },
 ];
 
@@ -105,12 +105,24 @@ const ManagerMeters = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
+  const [meterReadings, setMeterReadings] = useState<
+    Record<string, number | undefined>
+  >({});
 
   useEffect(() => {
     // Simulate API call
     setTimeout(() => {
       setMeters(mockMeters);
       setFilteredMeters(mockMeters);
+      // Initialize meterReadings with current readings
+      const initialReadings = mockMeters.reduce(
+        (acc, meter) => ({
+          ...acc,
+          [meter.id]: meter.currentReading,
+        }),
+        {}
+      );
+      setMeterReadings(initialReadings);
       setIsLoading(false);
     }, 800);
   }, []);
@@ -167,24 +179,33 @@ const ManagerMeters = () => {
     // Here you would navigate to meter details
   };
 
+  // Handle meter reading change
+  const handleReadingChange = (meterId: string, value: string) => {
+    const numericValue = value === "" ? undefined : parseFloat(value);
+    setMeterReadings((prev) => ({
+      ...prev,
+      [meterId]: numericValue,
+    }));
+  };
+
   // Define table columns
   const columns = [
-    {
-      header: "Serial Number",
-      accessor: (row: WaterMeter) => (
-        <div className="flex items-center">
-          <Droplet className="h-4 w-4 text-gray-500 mr-2" />
-          <span>{row.serialNumber}</span>
-        </div>
-      ),
-      sortable: true,
-    },
     {
       header: "Location",
       accessor: (row: WaterMeter) => (
         <div>
           <div className="font-medium">{row.apartmentNumber}</div>
           <div className="text-xs text-gray-500">{row.building}</div>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      header: "Serial Number",
+      accessor: (row: WaterMeter) => (
+        <div className="flex items-center">
+          <Droplet className="h-4 w-4 text-gray-500 mr-2" />
+          <span>{row.serialNumber}</span>
         </div>
       ),
       sortable: true,
@@ -225,29 +246,6 @@ const ManagerMeters = () => {
       sortable: true,
     },
     {
-      header: "Battery",
-      accessor: (row: WaterMeter) => (
-        <div className="flex items-center">
-          <div className="w-16 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-            <div
-              className={`h-2.5 rounded-full ${
-                row.batteryLevel > 20
-                  ? "bg-green-600"
-                  : row.batteryLevel > 10
-                  ? "bg-yellow-600"
-                  : "bg-red-600"
-              }`}
-              style={{ width: `${row.batteryLevel}%` }}
-            ></div>
-          </div>
-          <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
-            {row.batteryLevel}%
-          </span>
-        </div>
-      ),
-      sortable: true,
-    },
-    {
       header: "Status",
       accessor: (row: WaterMeter) => {
         const statusColors = {
@@ -270,6 +268,22 @@ const ManagerMeters = () => {
         );
       },
       sortable: true,
+    },
+    {
+      header: "Current Reading",
+      accessor: (row: WaterMeter) => (
+        <div className="w-32">
+          <Input
+            type="number"
+            step="0.1"
+            min="0"
+            value={meterReadings[row.id] ?? ""}
+            onChange={(e) => handleReadingChange(row.id, e.target.value)}
+            placeholder="Enter reading"
+            className="w-full"
+          />
+        </div>
+      ),
     },
     {
       header: "Actions",
