@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Plus,
   ChevronRight,
@@ -118,6 +119,7 @@ const mockApartments: Apartment[] = [
 ];
 
 const ManagerApartments = () => {
+  const navigate = useNavigate();
   const [apartments, setApartments] = useState<Apartment[]>([]);
   const [filteredApartments, setFilteredApartments] = useState<Apartment[]>([]);
   const [selectedBuilding, setSelectedBuilding] = useState("all");
@@ -178,8 +180,7 @@ const ManagerApartments = () => {
 
   // Handle view apartment details
   const handleViewApartment = (id: string) => {
-    console.log(`View apartment with ID: ${id}`);
-    // Here you would navigate to apartment details
+    navigate(`/manager/apartments/${id}`);
   };
 
   // Define table columns

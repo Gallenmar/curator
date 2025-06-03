@@ -13,6 +13,7 @@ import UserDashboard from "./pages/user/UserDashboard";
 import UserReadings from "./pages/user/UserReadings";
 import ManagerDashboard from "./pages/manager/ManagerDashboard";
 import ManagerApartments from "./pages/manager/ManagerApartments";
+import ManagerSingleApartmentPage from "./pages/manager/ManagerSingleApartmentPage";
 import ManagerUsers from "./pages/manager/ManagerUsers";
 import ManagerBuildings from "./pages/manager/ManagerBuildings";
 import AccountSettings from "./pages/AccountSettings";
@@ -60,6 +61,14 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={["manager"]}>
                     <ManagerApartments />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/manager/apartments/:id"
+                element={
+                  <ProtectedRoute allowedRoles={["manager"]}>
+                    <ManagerSingleApartmentPage />
                   </ProtectedRoute>
                 }
               />

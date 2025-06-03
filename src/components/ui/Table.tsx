@@ -234,7 +234,9 @@ function Table<T>({
                     >
                       {typeof column.accessor === "string"
                         ? String(row[column.accessor])
-                        : column.accessor(row)}
+                        : typeof column.accessor === "function"
+                        ? column.accessor(row)
+                        : ""}
                     </td>
                   ))}
                 </tr>
@@ -269,7 +271,7 @@ function Table<T>({
           </div>
 
           <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-            <div>
+            <div className="flex items-center gap-4">
               <p className="text-sm text-gray-700 dark:text-gray-300">
                 Showing{" "}
                 <span className="font-medium">
@@ -281,6 +283,25 @@ function Table<T>({
                 </span>{" "}
                 of <span className="font-medium">{data.length}</span> results
               </p>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-700 dark:text-gray-300">
+                  Show:
+                </span>
+                <select
+                  value={itemsPerPage}
+                  onChange={(e) => {
+                    setItemsPerPage(Number(e.target.value));
+                    setCurrentPage(1); // Reset to first page when changing items per page
+                  }}
+                  className="block w-20 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                </select>
+              </div>
             </div>
 
             <div>

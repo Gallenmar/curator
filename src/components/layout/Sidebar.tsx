@@ -10,6 +10,7 @@ import {
   Moon,
   LogOut,
   LayoutDashboard,
+  HouseIcon,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
@@ -73,7 +74,7 @@ const Sidebar = () => {
                   collapsed={sidebarCollapsed}
                 />
                 <NavItem
-                  icon={<Building2 />}
+                  icon={<HouseIcon />}
                   to="/manager/buildings"
                   label="All Buildings"
                   subItem
