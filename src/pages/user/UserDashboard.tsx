@@ -8,6 +8,11 @@ import StatCard from "../../components/dashboard/StatCard";
 import { useAuth } from "../../contexts/AuthContext";
 import { Droplet, Home, AlertCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import {
+  getApartmentInfo,
+  setApartmentInfo,
+} from "../../store/features/apiCounterReadings";
 
 // Mock data
 const mockReadingsData = {
@@ -30,8 +35,54 @@ const mockReadingsData = {
   ],
 };
 
+// Add this interface at the top of the file
+interface Counter {
+  //todo: mb receive info about last counter reading
+  //todo: next reading due date
+  factory_id: string;
+  type: "water" | "electricity";
+  setup_date: string;
+  due_date: string;
+  status: "active" | string;
+  reading_unit: "m³" | "kWh";
+  apartment_id: number;
+  id: number;
+  created_at: string;
+  updated_at: string;
+}
+
+interface Address {
+  street: string;
+  number: string;
+  block: string;
+  city: string;
+  postal_code: string;
+  country: string;
+  id: number;
+  created_at: string;
+  updated_at: string;
+}
+
+interface Apartment {
+  apartment_number: string;
+  address_id: number;
+  id: number;
+  created_at: string;
+  updated_at: string;
+  counters: Counter[];
+  address: Address;
+}
+
+export interface ApartmentInfo {
+  apartments: Apartment[];
+}
+
 const UserDashboard = () => {
   const { user } = useAuth();
+  const dispatch = useAppDispatch();
+  const apartmentInfo = useAppSelector((state) => state.counter.apartmentInfo);
+  const [displayApartmentInfo, setDisplayApartmentInfo] =
+    useState<Apartment | null>(null);
   const { t } = useTranslation();
   const [showReadingForm, setShowReadingForm] = useState(false);
 
@@ -47,7 +98,6 @@ const UserDashboard = () => {
   });
 
   useEffect(() => {
-    // Simulate API call to get summary data
     setTimeout(() => {
       setSummaryData({
         totalHotWater: 36.2,
@@ -59,17 +109,20 @@ const UserDashboard = () => {
         dueDate: "2025-05-25",
       });
     }, 500);
-  }, []);
+    const fetchData = async () => {
+      if (user?.id) {
+        const apartmentInfo = await getApartmentInfo(Number(user?.id)); // todo why is user id string?
+        dispatch(setApartmentInfo(apartmentInfo));
+      }
+    };
+    fetchData();
+  }, [user?.id, dispatch]);
 
-  const handleSubmitReading = (data: {
-    hotWater: number;
-    coldWater: number;
-  }) => {
-    console.log("Submitted readings:", data);
-    // Here would be an API call to submit readings
-    // Then close the form
-    setShowReadingForm(false);
-  };
+  useEffect(() => {
+    if (apartmentInfo) {
+      setDisplayApartmentInfo(apartmentInfo.apartments[0]);
+    }
+  }, [apartmentInfo]);
 
   // Format date to display "May 25, 2025"
   const formatDate = (dateString: string) => {
@@ -115,6 +168,14 @@ const UserDashboard = () => {
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <StatCard
+                title="Apartment"
+                value={displayApartmentInfo?.apartment_number ?? "N/A"}
+                icon={
+                  <Home className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                }
+                variant="secondary"
+              />
+              <StatCard
                 title="Hot Water"
                 value={`${summaryData.totalHotWater} m³`}
                 change={{ value: summaryData.hotWaterChange, trend: "up" }}
@@ -132,15 +193,6 @@ const UserDashboard = () => {
                   <Droplet className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                 }
                 variant="primary"
-              />
-
-              <StatCard
-                title="Apartment"
-                value="Apt 101"
-                icon={
-                  <Home className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-                }
-                variant="secondary"
               />
 
               <StatCard

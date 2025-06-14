@@ -53,8 +53,6 @@ async function baseApi<T>(
     body: formBody ?? body,
   };
 
-  console.log("requestConfig", requestConfig);
-
   const response = await fetch(`${baseURL}${endpoint}`, {
     ...requestConfig,
     method: method,
