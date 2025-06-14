@@ -3,16 +3,15 @@ import { Droplet } from "lucide-react";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import Card from "../ui/Card";
+import { submitCounters } from "./submitCounters";
 
 interface MeterReadingFormProps {
-  onSubmit: (data: { hotWater: number; coldWater: number }) => void;
   previousHotReading?: number;
   previousColdReading?: number;
   isLoading?: boolean;
 }
 
 const MeterReadingForm = ({
-  onSubmit,
   previousHotReading,
   previousColdReading,
   isLoading = false,
@@ -54,12 +53,19 @@ const MeterReadingForm = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (validateReadings()) {
-      onSubmit({
-        hotWater: Number(hotWater),
-        coldWater: Number(coldWater),
-      });
+      submitCounters([
+        {
+          counter_id: 1,
+          value: Number(hotWater),
+          date: new Date().toISOString().split("T")[0],
+        },
+        {
+          counter_id: 2,
+          value: Number(coldWater),
+          date: new Date().toISOString().split("T")[0],
+        },
+      ]);
     }
   };
 

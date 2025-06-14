@@ -5,7 +5,7 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-import authApi from "../store/features/auth/api";
+import { authApi } from "../store/features/auth/api";
 
 // Define types for our context
 interface User {
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const response = await authApi.login(username, password);
 
-      const { user, token } = response;
+      const { user, access_token: token } = response;
 
       const userInfo = {
         id: user.id,

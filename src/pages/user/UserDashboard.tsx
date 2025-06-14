@@ -104,7 +104,6 @@ const UserDashboard = () => {
         {showReadingForm && (
           <div className="mt-4 animate-fadeIn">
             <MeterReadingForm
-              onSubmit={handleSubmitReading}
               previousHotReading={summaryData.lastHotReading}
               previousColdReading={summaryData.lastColdReading}
             />

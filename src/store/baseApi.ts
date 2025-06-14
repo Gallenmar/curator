@@ -50,8 +50,10 @@ async function baseApi<T>(
   const requestConfig: RequestInit = {
     ...customConfig,
     headers: headersWithAuth,
-    body: formBody,
+    body: formBody ?? body,
   };
+
+  console.log("requestConfig", requestConfig);
 
   const response = await fetch(`${baseURL}${endpoint}`, {
     ...requestConfig,

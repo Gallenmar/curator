@@ -10,7 +10,7 @@ interface User {
 
 interface LoginResponse {
   user: User;
-  token: string;
+  access_token: string;
   token_type: string;
 }
 
@@ -32,4 +32,4 @@ const authApi = {
   },
 };
 
-export default authApi;
+export { authApi };
