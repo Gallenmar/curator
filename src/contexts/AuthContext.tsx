@@ -9,7 +9,7 @@ import { authApi } from "../store/features/auth/api";
 
 // Define types for our context
 interface User {
-  id: string;
+  id: string; // todo: users have auto incremented number id, not safe
   firstName: string;
   lastName: string;
   email: string;

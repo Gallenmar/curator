@@ -10,7 +10,6 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
 import UserDashboard from "./pages/user/UserDashboard";
-import UserReadings from "./pages/user/UserReadings";
 import ManagerDashboard from "./pages/manager/ManagerDashboard";
 import ManagerApartments from "./pages/manager/ManagerApartments";
 import ManagerSingleApartmentPage from "./pages/manager/ManagerSingleApartmentPage";
@@ -35,14 +34,6 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={["user"]}>
                     <UserDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/user/readings"
-                element={
-                  <ProtectedRoute allowedRoles={["user"]}>
-                    <UserReadings />
                   </ProtectedRoute>
                 }
               />

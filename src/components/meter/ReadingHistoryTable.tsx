@@ -3,12 +3,12 @@ import Table from "../ui/Table";
 
 // Define the reading data type
 interface ReadingData {
-  id: string;
-  month: string;
-  hotWater: number;
-  coldWater: number;
-  submittedAt: string;
-  status: "pending" | "approved" | "rejected";
+  counter_id: number;
+  value: number;
+  date: string;
+  id: number;
+  created_at: string;
+  updated_at: string;
 }
 
 interface ReadingHistoryTableProps {
@@ -32,56 +32,30 @@ const ReadingHistoryTable = ({
   // Define table columns
   const columns = [
     {
-      header: "Month",
-      accessor: "month",
+      header: "Date",
+      accessor: (row: ReadingData) => formatDate(row.date),
       sortable: true,
     },
     {
-      header: "Hot Water (m³)",
-      accessor: (row: ReadingData) => (
-        <div className="flex items-center">
-          <Droplet className="h-4 w-4 text-red-500 mr-1" />
-          <span>{row.hotWater}</span>
-        </div>
-      ),
-      sortable: true,
-    },
-    {
-      header: "Cold Water (m³)",
+      header: "Reading (m³)",
       accessor: (row: ReadingData) => (
         <div className="flex items-center">
           <Droplet className="h-4 w-4 text-blue-500 mr-1" />
-          <span>{row.coldWater}</span>
+          <span>{row.value}</span>
         </div>
       ),
       sortable: true,
     },
     {
       header: "Submitted",
-      accessor: (row: ReadingData) => formatDate(row.submittedAt),
+      accessor: (row: ReadingData) => formatDate(row.created_at),
       sortable: true,
     },
     {
-      header: "Status",
-      accessor: (row: ReadingData) => {
-        const statusColors = {
-          pending:
-            "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",
-          approved:
-            "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
-          rejected: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
-        };
-
-        return (
-          <span
-            className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[row.status]}`}
-          >
-            {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
-          </span>
-        );
-      },
+      header: "Last Updated",
+      accessor: (row: ReadingData) => formatDate(row.updated_at),
       sortable: true,
-    },
+    }
   ];
 
   return (

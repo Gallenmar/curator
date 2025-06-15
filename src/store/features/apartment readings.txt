@@ -1,0 +1,18 @@
+
+export const getApartmentReadings = async (apartmentId: number) => {
+  const response = await baseApi<ApartmentReading>(
+    "GET",
+    `/apartments/${apartmentId}/readings`
+  );
+  return response.data;
+};
+
+
+export interface ApartmentReading {
+  apartment_number: string;
+  address_id: number;
+  id: number;
+  created_at: string;
+  updated_at: string;
+  counters: Counter[];
+}

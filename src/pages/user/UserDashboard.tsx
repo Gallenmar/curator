@@ -10,116 +10,29 @@ import { Droplet, Home, AlertCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import {
-  getApartmentInfo,
-  setApartmentInfo,
+  Apartment,
+  fetchApartmentInfo,
 } from "../../store/features/apiCounterReadings";
-
-// Mock data
-const mockReadingsData = {
-  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-  datasets: [
-    {
-      label: "Hot Water",
-      data: [26.5, 28.9, 30.1, 31.4, 33.8, 36.2],
-      borderColor: "#ef4444",
-      backgroundColor: "rgba(239, 68, 68, 0.2)",
-      tension: 0.3,
-    },
-    {
-      label: "Cold Water",
-      data: [42.3, 44.8, 47.2, 49.9, 52.7, 55.4],
-      borderColor: "#3b82f6",
-      backgroundColor: "rgba(59, 130, 246, 0.2)",
-      tension: 0.3,
-    },
-  ],
-};
-
-// Add this interface at the top of the file
-interface Counter {
-  //todo: mb receive info about last counter reading
-  //todo: next reading due date
-  factory_id: string;
-  type: "water" | "electricity";
-  setup_date: string;
-  due_date: string;
-  status: "active" | string;
-  reading_unit: "m³" | "kWh";
-  apartment_id: number;
-  id: number;
-  created_at: string;
-  updated_at: string;
-}
-
-interface Address {
-  street: string;
-  number: string;
-  block: string;
-  city: string;
-  postal_code: string;
-  country: string;
-  id: number;
-  created_at: string;
-  updated_at: string;
-}
-
-interface Apartment {
-  apartment_number: string;
-  address_id: number;
-  id: number;
-  created_at: string;
-  updated_at: string;
-  counters: Counter[];
-  address: Address;
-}
-
-export interface ApartmentInfo {
-  apartments: Apartment[];
-}
 
 const UserDashboard = () => {
   const { user } = useAuth();
   const dispatch = useAppDispatch();
-  const apartmentInfo = useAppSelector((state) => state.counter.apartmentInfo);
-  const [displayApartmentInfo, setDisplayApartmentInfo] =
-    useState<Apartment | null>(null);
   const { t } = useTranslation();
   const [showReadingForm, setShowReadingForm] = useState(false);
 
-  // State for summary data
-  const [summaryData, setSummaryData] = useState({
-    totalHotWater: 0,
-    totalColdWater: 0,
-    hotWaterChange: 0,
-    coldWaterChange: 0,
-    lastHotReading: 0,
-    lastColdReading: 0,
-    dueDate: "",
-  });
+  const apartmentInfo = useAppSelector((state) => state.counter.apartmentInfo);
+  const [displayApartmentInfo, setDisplayApartmentInfo] =
+    useState<Apartment | null>(null);
 
   useEffect(() => {
-    setTimeout(() => {
-      setSummaryData({
-        totalHotWater: 36.2,
-        totalColdWater: 55.4,
-        hotWaterChange: 7.1,
-        coldWaterChange: 5.1,
-        lastHotReading: 36.2,
-        lastColdReading: 55.4,
-        dueDate: "2025-05-25",
-      });
-    }, 500);
-    const fetchData = async () => {
-      if (user?.id) {
-        const apartmentInfo = await getApartmentInfo(Number(user?.id)); // todo why is user id string?
-        dispatch(setApartmentInfo(apartmentInfo));
-      }
-    };
-    fetchData();
+    if (user?.id) {
+      dispatch(fetchApartmentInfo(user?.id));
+    }
   }, [user?.id, dispatch]);
 
   useEffect(() => {
     if (apartmentInfo) {
+      // todo: later manage multiple apartments
       setDisplayApartmentInfo(apartmentInfo.apartments[0]);
     }
   }, [apartmentInfo]);
@@ -131,6 +44,11 @@ const UserDashboard = () => {
       month: "long",
       day: "numeric",
     });
+  };
+
+  const getDueDate = (apartment: Apartment | null) => {
+    // todo: figure out loading state when apartment is loading
+    return apartment?.counters[0].due_date ?? "";
   };
 
   return (
@@ -157,8 +75,7 @@ const UserDashboard = () => {
         {showReadingForm && (
           <div className="mt-4 animate-fadeIn">
             <MeterReadingForm
-              previousHotReading={summaryData.lastHotReading}
-              previousColdReading={summaryData.lastColdReading}
+              selectedApartment={displayApartmentInfo?.id}
             />
           </div>
         )}
@@ -175,119 +92,44 @@ const UserDashboard = () => {
                 }
                 variant="secondary"
               />
-              <StatCard
-                title="Hot Water"
-                value={`${summaryData.totalHotWater} m³`}
-                change={{ value: summaryData.hotWaterChange, trend: "up" }}
-                icon={
-                  <Droplet className="h-6 w-6 text-red-600 dark:text-red-400" />
-                }
-                variant="danger"
-              />
-
-              <StatCard
-                title="Cold Water"
-                value={`${summaryData.totalColdWater} m³`}
-                change={{ value: summaryData.coldWaterChange, trend: "up" }}
-                icon={
-                  <Droplet className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                }
-                variant="primary"
-              />
 
               <StatCard
                 title="Next Reading Due"
-                value={formatDate(summaryData.dueDate)}
+                value={formatDate(getDueDate(displayApartmentInfo ?? null))}
                 icon={
                   <AlertCircle className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
                 }
                 variant="warning"
               />
+
+              {displayApartmentInfo?.counters.length &&
+                displayApartmentInfo?.counters.length > 0 &&
+                displayApartmentInfo?.counters.length < 3 && (
+                  displayApartmentInfo?.counters.map((counter) => (
+                    <StatCard
+                      key={counter.id}
+                      title={counter.type}
+                      value={`${counter.latest_reading?.value} ${counter.reading_unit}`}
+                      change={{ value: 0, trend: "up" }}
+                      icon={
+                        <Droplet className="h-6 w-6 text-red-600 dark:text-red-400" />
+                      }
+                      variant="danger"
+                    />
+                  ))
+                )}
             </div>
 
             {/* Usage Chart */}
-            <Card title="Water Usage Trends" className="mt-6">
+            {/* <Card title="Water Usage Trends" className="mt-6">
               <div className="pt-2">
                 <LineChart data={mockReadingsData} height={350} />
               </div>
-            </Card>
-
-            {/* Recent Notifications */}
-            <Card
-              title="Recent Notifications"
-              footer={
-                <div className="flex justify-center">
-                  <Button variant="outline" size="sm">
-                    View All Notifications
-                  </Button>
-                </div>
-              }
-            >
-              <div className="space-y-3">
-                <NotificationItem
-                  title="Reading Approved"
-                  message="Your April water meter reading has been approved."
-                  time="2 days ago"
-                  variant="success"
-                />
-                <NotificationItem
-                  title="Reading Reminder"
-                  message="Please submit your May water meter reading by May 25."
-                  time="5 days ago"
-                  variant="warning"
-                />
-                <NotificationItem
-                  title="Account Update"
-                  message="Your account information has been updated successfully."
-                  time="1 week ago"
-                  variant="info"
-                />
-              </div>
-            </Card>
+            </Card> */}
           </>
         )}
       </div>
     </Layout>
-  );
-};
-
-// Helper component for notifications
-interface NotificationItemProps {
-  title: string;
-  message: string;
-  time: string;
-  variant: "success" | "warning" | "danger" | "info";
-}
-
-const NotificationItem = ({
-  title,
-  message,
-  time,
-  variant,
-}: NotificationItemProps) => {
-  const variantStyles = {
-    success:
-      "bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800",
-    warning:
-      "bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800",
-    danger: "bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800",
-    info: "bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800",
-  };
-
-  return (
-    <div className={`p-3 rounded-md border ${variantStyles[variant]}`}>
-      <div className="flex justify-between items-start">
-        <div>
-          <h4 className="text-sm font-medium text-gray-900 dark:text-white">
-            {title}
-          </h4>
-          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {message}
-          </p>
-        </div>
-        <span className="text-xs text-gray-500 dark:text-gray-500">{time}</span>
-      </div>
-    </div>
   );
 };
 

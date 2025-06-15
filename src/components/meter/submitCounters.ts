@@ -1,8 +1,7 @@
 // todo: change types definition place
-import { CounterReading } from "../../store/features/apiCounterReadings";
-import { counterReadingsApi } from "../../store/features/apiCounterReadings";
+import { CounterReadingPost, counterReadingsApi } from "../../store/features/apiCounterReadings";
 
-export const submitCounters = async (counters: CounterReading[]) => {
+export const submitCounters = async (counters: CounterReadingPost[]) => {
   const responses = await Promise.allSettled(
     counters.map((counter) => {
       return counterReadingsApi.postCounterReading(counter);

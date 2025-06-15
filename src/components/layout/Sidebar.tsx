@@ -58,12 +58,6 @@ const Sidebar = () => {
                   label="Dashboard"
                   collapsed={sidebarCollapsed}
                 />
-                <NavItem
-                  to="/user/readings"
-                  icon={<Droplet />}
-                  label="My Readings"
-                  collapsed={sidebarCollapsed}
-                />
               </>
             ) : (
               <>
