@@ -12,7 +12,9 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import {
   Apartment,
   fetchApartmentInfo,
-} from "../../store/features/apiCounterReadings";
+} from "../../store/features/apiApartment";
+import ApartmentReadings from "../../components/meter/ApartmentReadings";
+import { fetchApartmentReadings } from "../../store/features/apiApartmentReadings";
 
 const UserDashboard = () => {
   const { user } = useAuth();
@@ -20,15 +22,23 @@ const UserDashboard = () => {
   const { t } = useTranslation();
   const [showReadingForm, setShowReadingForm] = useState(false);
 
-  const apartmentInfo = useAppSelector((state) => state.counter.apartmentInfo);
+  const apartmentInfo = useAppSelector((state) => state.apartmentInfo.apartmentInfo);
   const [displayApartmentInfo, setDisplayApartmentInfo] =
     useState<Apartment | null>(null);
+  const apartmentReadings = useAppSelector((state) => state.apartmentReadings.apartmentReadings);
+  const loading = useAppSelector((state) => state.apartmentReadings.loading);
 
   useEffect(() => {
     if (user?.id) {
-      dispatch(fetchApartmentInfo(user?.id));
+      dispatch(fetchApartmentInfo(Number(user?.id)));
     }
   }, [user?.id, dispatch]);
+
+  useEffect(() => {
+    if (displayApartmentInfo?.id) {
+      dispatch(fetchApartmentReadings(displayApartmentInfo.id));
+    }
+  }, [displayApartmentInfo?.id, dispatch]);
 
   useEffect(() => {
     if (apartmentInfo) {
@@ -72,7 +82,7 @@ const UserDashboard = () => {
           </Button>
         </div>
 
-        {showReadingForm && (
+        {showReadingForm && displayApartmentInfo && (
           <div className="mt-4 animate-fadeIn">
             <MeterReadingForm
               selectedApartment={displayApartmentInfo?.id}
@@ -120,12 +130,7 @@ const UserDashboard = () => {
                 )}
             </div>
 
-            {/* Usage Chart */}
-            {/* <Card title="Water Usage Trends" className="mt-6">
-              <div className="pt-2">
-                <LineChart data={mockReadingsData} height={350} />
-              </div>
-            </Card> */}
+            <ApartmentReadings apartmentReadings={apartmentReadings} loading={loading} />
           </>
         )}
       </div>

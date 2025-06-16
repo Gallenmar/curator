@@ -12,7 +12,6 @@ export interface CounterReading {
 }
 
 interface Counter {
-  //todo: mb receive info about last counter reading
   //todo: next reading due date
   factory_id: string;
   type: string;
@@ -61,7 +60,7 @@ export interface CounterReadingPost {
 
 // API
 // todo: move to separate file + handle success and error cases
-export const counterReadingsApi = {
+export const postCpunterReadings = {
   postCounterReading: async (counter: CounterReadingPost) => {
     const response = await baseApi<CounterReadingPost>(
       "POST",
@@ -74,26 +73,26 @@ export const counterReadingsApi = {
   },
 };
 
-export const getApartmentInfo = async (userId: string) => {
+export const getApartmentInfo = async (apartmentId: number) => {
   const response = await baseApi<ApartmentInfo>(
     "GET",
-    `/user-apartments/user/${userId}/apartments-with-counters`
+    `/user-apartments/user/${apartmentId}/apartments-with-counters`
   );
   return response.data;
 };
 
 // THUNKS
 export const fetchApartmentInfo = createAsyncThunk(
-  'counter/fetchApartmentInfo',
-  async (userId: string) => {
-    const response = await getApartmentInfo(userId);
+  'apartmentInfo/fetchApartmentInfo',
+  async (apartmentId: number) => {
+    const response = await getApartmentInfo(apartmentId);
     return response;
   }
 );
 
 // SLICE
 export const counterSlice = createSlice({
-  name: "counter",
+  name: "apartmentInfo",
   initialState: {
     apartmentInfo: null as ApartmentInfo | null,
     loading: false,

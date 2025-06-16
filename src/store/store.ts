@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import counterReducer from "./features/apiCounterReadings";
+import apartmentInfoReducer from "./features/apiApartment";
+import apartmentReadingsReducer from "./features/apiApartmentReadings";
 
 // Create the store
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    apartmentInfo: apartmentInfoReducer,
+    apartmentReadings: apartmentReadingsReducer,
   },
 });
 

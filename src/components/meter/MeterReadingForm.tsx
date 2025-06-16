@@ -5,7 +5,7 @@ import Input from "../ui/Input";
 import Card from "../ui/Card";
 import { submitCounters } from "./submitCounters";
 import { useAppSelector } from "../../store/store";
-import { Apartment } from "../../store/features/apiCounterReadings";
+import { Apartment } from "../../store/features/apiApartment";
 
   interface MeterReadingFormProps {
   selectedApartment: number;
@@ -24,7 +24,7 @@ const MeterReadingForm = ({
 }: MeterReadingFormProps) => {
   const [readings, setReadings] = useState<Record<number, string>>({});
   const [errors, setErrors] = useState<{ hot?: string; cold?: string }>({});
-  const apartmentInfo = useAppSelector((state) => state.counter.apartmentInfo);
+  const apartmentInfo = useAppSelector((state) => state.apartmentInfo.apartmentInfo);
   const [apartment, setApartment] = useState<Apartment | null>(null);
 
   useEffect(() => {
