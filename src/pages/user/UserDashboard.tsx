@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import Layout from "../../components/layout/Layout";
-import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
-import LineChart from "../../components/charts/LineChart";
 import MeterReadingForm from "../../components/meter/MeterReadingForm";
 import StatCard from "../../components/dashboard/StatCard";
 import { useAuth } from "../../contexts/AuthContext";
