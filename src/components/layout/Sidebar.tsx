@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 import {
   Home,
-  Droplet,
   Building2,
   Users,
   Settings,
