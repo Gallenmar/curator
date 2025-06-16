@@ -15,5 +15,21 @@
   "success": "Success",
   "waterMeterReadings": "Water Meter Readings",
   "currentStatus": "Here's the current status of your water consumption",
-  "overview": "Overview of all buildings and water consumption"
+  "overview": "Overview of all buildings and water consumption",
+  "waterMeterManager": "WaterMeter Manager",
+  "trackAndManage": "Track and manage your water consumption",
+  "signInToAccount": "Sign in to your account",
+  "enterCredentials": "Enter your credentials to access your dashboard",
+  "username": "Username",
+  "enterUsername": "Enter your username",
+  "password": "Password",
+  "enterPassword": "Enter your password",
+  "rememberMe": "Remember me",
+  "forgotPassword": "Forgot password?",
+  "signIn": "Sign in",
+  "demoCredentials": "Demo credentials:",
+  "userCredentials": "User: user / user123",
+  "managerCredentials": "Manager: manager / manager123",
+  "invalidCredentials": "Invalid username or password",
+  "loginError": "An error occurred during login. Please try again."
 }

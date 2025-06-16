@@ -4,13 +4,15 @@ import { Droplet, User, Lock } from "lucide-react";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { useAuth } from "../contexts/AuthContext";
-import RelativeSwitcher from "../components/languageSwitcher/RelativeSwitcher.tsx";
+import LanguageSwitcher from "../components/languageSwitcher/LanguageSwitcher.tsx";
+import { useTranslation } from "react-i18next";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -31,10 +33,10 @@ const LoginPage = () => {
           navigate("/");
         }
       } else {
-        setError("Invalid username or password");
+        setError(t("invalidCredentials"));
       }
     } catch (err) {
-      setError("An error occurred during login. Please try again.");
+      setError(t("loginError"));
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -53,24 +55,26 @@ const LoginPage = () => {
                   <Droplet className="h-7 w-7 text-blue-600" />
                 </div>
               </div>
-              <RelativeSwitcher collapsed={false} />
+              <div className="w-28">
+                <LanguageSwitcher collapsed={false} color="white" />
+              </div>
             </div>
             <h1 className="text-2xl font-bold text-center text-white">
-              WaterMeter Manager
+              {t("waterMeterManager")}
             </h1>
             <p className="mt-2 text-center text-blue-200">
-              Track and manage your water consumption
+              {t("trackAndManage")}
             </p>
           </div>
 
           {/* Login Form */}
           <div className="p-6 sm:p-8">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-              Sign in to your account
+              {t("signInToAccount")}
             </h2>
 
             <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-              Enter your credentials to access your dashboard
+              {t("enterCredentials")}
             </p>
 
             {error && (
@@ -83,8 +87,8 @@ const LoginPage = () => {
               <Input
                 id="username"
                 type="text"
-                label="Username"
-                placeholder="Enter your username"
+                label={t("username")}
+                placeholder={t("enterUsername")}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -95,8 +99,8 @@ const LoginPage = () => {
               <Input
                 id="password"
                 type="password"
-                label="Password"
-                placeholder="Enter your password"
+                label={t("password")}
+                placeholder={t("enterPassword")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -115,7 +119,7 @@ const LoginPage = () => {
                     htmlFor="remember-me"
                     className="ml-2 block text-sm text-gray-700 dark:text-gray-300"
                   >
-                    Remember me
+                    {t("rememberMe")}
                   </label>
                 </div>
 
@@ -123,22 +127,22 @@ const LoginPage = () => {
                   href="#"
                   className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
                 >
-                  Forgot password?
+                  {t("forgotPassword")}
                 </a>
               </div>
 
               <Button type="submit" fullWidth isLoading={isLoading}>
-                Sign in
+                {t("signIn")}
               </Button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Demo credentials:
+                {t("demoCredentials")}
               </p>
               <div className="mt-2 space-y-1 text-xs text-gray-500 dark:text-gray-500">
-                <p>User: user / user123</p>
-                <p>Manager: manager / manager123</p>
+                <p>{t("userCredentials")}</p>
+                <p>{t("managerCredentials")}</p>
               </div>
             </div>
           </div>
