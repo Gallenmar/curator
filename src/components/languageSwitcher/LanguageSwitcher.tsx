@@ -3,7 +3,7 @@ import { useClickOutside } from "../../hooks/useClickOutside";
 import LanguageButton from "./LanguageButton";
 import LanguageDropdown from "./LanguageDropdown";
 
-const LanguageSwitcher = ({ collapsed, color="black" }: { collapsed: boolean, color: string }) => {
+const LanguageSwitcher = ({ collapsed, color = "black" }: { collapsed: boolean, color?: string | null }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
