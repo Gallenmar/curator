@@ -56,7 +56,7 @@ const LoginPage = () => {
                 </div>
               </div>
               <div className="w-28">
-                <LanguageSwitcher collapsed={false} color="white" />
+                <LanguageSwitcher collapsed={false} color="white" hoverColor="bg-blue-700" />
               </div>
             </div>
             <h1 className="text-2xl font-bold text-center text-white">

@@ -3,7 +3,7 @@ import { useClickOutside } from "../../hooks/useClickOutside";
 import LanguageButton from "./LanguageButton";
 import LanguageDropdown from "./LanguageDropdown";
 
-const LanguageSwitcher = ({ collapsed, color = "black" }: { collapsed: boolean, color?: string | null }) => {
+const LanguageSwitcher = ({ collapsed, color = "black", hoverColor = "bg-gray-100" }: { collapsed: boolean, color?: string | null, hoverColor?: string | undefined }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
@@ -16,7 +16,7 @@ const LanguageSwitcher = ({ collapsed, color = "black" }: { collapsed: boolean, 
         <LanguageButton
           collapsed={collapsed}
           onClick={() => setIsOpen(!isOpen)}
-          className={`w-full px-4 py-3 flex items-center ${color === "white" ? "text-white" : "text-gray-700 dark:text-gray-300"} hover:bg-blue-700 dark:hover:bg-gray-700 rounded-lg transition-colors`}
+          className={`w-full px-4 py-3 flex items-center ${color === "white" ? "text-white" : "text-gray-700 dark:text-gray-300"} hover:${hoverColor} dark:hover:bg-gray-700 rounded-lg transition-colors`}
         />
       </div>
       {isOpen && (
