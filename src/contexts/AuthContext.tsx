@@ -6,6 +6,7 @@ import {
   ReactNode,
 } from "react";
 import { authApi } from "../store/features/auth/api";
+import { setLogoutCallback } from "../store/baseApi";
 
 // Define types for our context
 interface User {
@@ -30,6 +31,17 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("authToken");
+  };
+
+  useEffect(() => {
+    setLogoutCallback(logout);
+    return () => setLogoutCallback(() => {});
+  }, []);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -69,12 +81,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error("Login failed:", error);
       return null;
     }
-  };
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("authToken");
   };
 
   return (

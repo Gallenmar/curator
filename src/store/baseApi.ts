@@ -11,6 +11,12 @@ interface ApiResponse<T> {
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+let globalLogoutCallback: (() => void) | null = null;
+
+export const setLogoutCallback = (callback: () => void) => {
+  globalLogoutCallback = callback;
+};
+
 async function baseApi<T>(
   method: string,
   endpoint: string,
@@ -62,8 +68,9 @@ async function baseApi<T>(
   if (!response.ok) {
     if (response.status === 401) {
       console.error("Unauthorized: Please log in again.");
-      // Optionally dispatch a logout action here if using Redux-Thunk/Saga
-      // store.dispatch(logout());
+      if (globalLogoutCallback) {
+        globalLogoutCallback();
+      }
     }
     throw new Error(data.message || "Something went wrong");
   }
