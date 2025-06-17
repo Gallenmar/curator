@@ -4,12 +4,13 @@ import Button from "../ui/Button";
 import Input from "../ui/Input";
 import Card from "../ui/Card";
 import { submitCounters } from "./submitCounters";
-import { useAppSelector } from "../../store/store";
-import { Apartment } from "../../store/features/apiApartment";
+import { useAppSelector, useAppDispatch } from "../../store/store";
+import { Apartment, fetchApartmentInfo } from "../../store/features/apiApartment";
 
-  interface MeterReadingFormProps {
+interface MeterReadingFormProps {
   selectedApartment: number;
   isLoading?: boolean;
+  onSuccess?: () => void;
 }
 
 const typeColorMap = {
@@ -20,21 +21,30 @@ const typeColorMap = {
 
 const MeterReadingForm = ({
   selectedApartment,
-  isLoading = false,
+  isLoading: externalLoading = false,
+  onSuccess,
 }: MeterReadingFormProps) => {
   const [readings, setReadings] = useState<Record<number, string>>({});
   const [errors, setErrors] = useState<{ hot?: string; cold?: string }>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const apartmentInfo = useAppSelector((state) => state.apartmentInfo.apartmentInfo);
   const [apartment, setApartment] = useState<Apartment | null>(null);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // todo: how and where to reduce useEffects?
     if (apartmentInfo) {
       const apartment = apartmentInfo.apartments.find(
         (apartment) => apartment.id === selectedApartment
       );
       if (apartment) {
         setApartment(apartment);
+        setReadings(apartment.counters.reduce((acc, counter) => {
+          // todo: check if reading is submitted in a period of time
+          if (counter.latest_reading?.date === new Date().toISOString().split("T")[0]) {
+            acc[counter.id] = counter.latest_reading.value.toString();
+          }
+          return acc;
+        }, {} as Record<number, string>));
       }
     }
   }, [selectedApartment, apartmentInfo]);
@@ -65,15 +75,38 @@ const MeterReadingForm = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(readings);
-    if (validateReadings()) {
-      submitCounters(Object.entries(readings).map(([id, value]) => ({
-        counter_id: parseInt(id),
-        value: Number(value), 
-        date: new Date().toISOString().split("T")[0]
-      })));
+    if (!validateReadings()) return;
+
+    setIsSubmitting(true);
+    try {
+      const responses = await submitCounters(
+        Object.entries(readings).map(([id, value]) => ({
+          counter_id: parseInt(id),
+          value: Number(value),
+          date: new Date().toISOString().split("T")[0],
+        }))
+      );
+
+      const allSuccessful = responses.every(
+        (response) => response.status === "fulfilled"
+      );
+
+      if (allSuccessful) {
+        await dispatch(fetchApartmentInfo(selectedApartment));
+        setReadings({});
+        onSuccess?.();
+      } else {
+        const failedResponses = responses.filter(
+          (response) => response.status === "rejected"
+        );
+        console.error("Failed to submit some readings:", failedResponses);
+      }
+    } catch (error) {
+      console.error("Error submitting readings:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -89,18 +122,26 @@ const MeterReadingForm = ({
               label={`• ${counter.type} Reading (m³)`}
               type="number"
               step="0.01"
-              value={readings[counter.id] || ''}
-              onChange={(e) => setReadings(prev => ({
-                ...prev,
-                [counter.id]: e.target.value
-              }))}
+              value={readings[counter.id] || ""}
+              onChange={(e) =>
+                setReadings((prev) => ({
+                  ...prev,
+                  [counter.id]: e.target.value,
+                }))
+              }
               error={errors[counter.id.toString() as keyof typeof errors]}
               helperText={
                 counter.latest_reading
                   ? `Previous reading: ${counter.latest_reading.value} ${counter.reading_unit}`
                   : ""
               }
-              leftIcon={<Droplet className={`h-5 w-5 ${typeColorMap[counter.type as keyof typeof typeColorMap]}`} />}
+              leftIcon={
+                <Droplet
+                  className={`h-5 w-5 ${
+                    typeColorMap[counter.type as keyof typeof typeColorMap]
+                  }`}
+                />
+              }
             />
           ))}
         </div>
@@ -109,7 +150,7 @@ const MeterReadingForm = ({
           <Button
             type="submit"
             variant="primary"
-            isLoading={isLoading}
+            isLoading={isSubmitting || externalLoading}
             fullWidth
           >
             Submit Readings

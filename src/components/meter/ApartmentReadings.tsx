@@ -16,9 +16,9 @@ interface ReadingRow {
 }
 
 const typeColorMap = {
-  hot: "rgba(255, 99, 132, 1)",    // red
-  cold: "rgba(54, 162, 235, 1)",   // blue
-  water: "rgba(75, 192, 192, 1)",  // teal
+  'hot water': "rgba(255, 99, 132, 1)",    // red
+  'cold water': "rgba(54, 162, 235, 1)",   // blue
+  'electricity': "rgba(75, 192, 192, 1)",  // teal
   default: "rgba(153, 102, 255, 1)" // purple
 };
 

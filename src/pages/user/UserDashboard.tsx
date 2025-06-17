@@ -7,6 +7,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { Droplet, Home, AlertCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { useSearchParams } from "react-router-dom";
 import {
   Apartment,
   fetchApartmentInfo,
@@ -18,7 +19,9 @@ const UserDashboard = () => {
   const { user } = useAuth();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const [showReadingForm, setShowReadingForm] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const showReadingForm = searchParams.get("form") === "reading";
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const apartmentInfo = useAppSelector((state) => state.apartmentInfo.apartmentInfo);
   const [displayApartmentInfo, setDisplayApartmentInfo] =
@@ -59,6 +62,29 @@ const UserDashboard = () => {
     return apartment?.counters[0].due_date ?? "";
   };
 
+  const toggleReadingForm = () => {
+    if (showReadingForm) {
+      searchParams.delete("form");
+    } else {
+      searchParams.set("form", "reading");
+    }
+    setSearchParams(searchParams);
+  };
+
+  const handleReadingSuccess = async () => {
+    setIsSubmitting(true);
+    try {
+      searchParams.delete("form");
+      setSearchParams(searchParams);
+      if (displayApartmentInfo?.id) {
+        await dispatch(fetchApartmentReadings(displayApartmentInfo.id));
+        await dispatch(fetchApartmentInfo(Number(user?.id)));
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <Layout>
       <div className="space-y-6">
@@ -73,7 +99,7 @@ const UserDashboard = () => {
           </div>
 
           <Button
-            onClick={() => setShowReadingForm(!showReadingForm)}
+            onClick={toggleReadingForm}
             leftIcon={<Droplet className="h-4 w-4" />}
           >
             {showReadingForm ? "Cancel" : "Submit New Reading"}
@@ -84,6 +110,8 @@ const UserDashboard = () => {
           <div className="mt-4 animate-fadeIn">
             <MeterReadingForm
               selectedApartment={displayApartmentInfo?.id}
+              isLoading={isSubmitting}
+              onSuccess={handleReadingSuccess}
             />
           </div>
         )}

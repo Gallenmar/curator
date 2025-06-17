@@ -1,5 +1,5 @@
-import { useNavigate, useLocation } from "react-router-dom";
-import { Settings, LogOut, Moon, Sun, Menu, Home } from "lucide-react";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
+import { Settings, LogOut, Moon, Sun, Menu, Home, X, Plus } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import LanguageSwitcher from "../languageSwitcher/LanguageSwitcher";
@@ -10,6 +10,7 @@ const TopBar = () => {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+  const [, setSearchParams] = useSearchParams();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = () => {
@@ -19,6 +20,12 @@ const TopBar = () => {
 
   const isActive = (path: string) => {
     return location.pathname === path;
+  };
+
+  const openReadingForm = () => {
+    navigate("/user");
+    setSearchParams({ form: "reading" });
+    setIsMenuOpen(false);
   };
 
   return (
@@ -46,6 +53,12 @@ const TopBar = () => {
                 }`}
               >
                 <Home className="h-6 w-6" />
+              </button>
+              <button
+                onClick={openReadingForm}
+                className="relative rounded-full p-2 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-300 dark:hover:bg-gray-700"
+              >
+                <Plus className="h-6 w-6" />
               </button>
               <LanguageSwitcher collapsed={false} />
               <button
@@ -96,8 +109,14 @@ const TopBar = () => {
           <div className="fixed inset-y-0 right-0 w-64 bg-white dark:bg-gray-800 shadow-xl">
             <div className="flex flex-col h-full">
               {/* Header */}
-              <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+              <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Menu</h2>
+                <button
+                  onClick={() => setIsMenuOpen(false)}
+                  className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <X className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+                </button>
               </div>
 
               {/* Spacer */}
@@ -118,6 +137,14 @@ const TopBar = () => {
                 >
                   <Home className="h-6 w-6 mr-3" />
                   <span>Dashboard</span>
+                </button>
+
+                <button
+                  onClick={openReadingForm}
+                  className="flex items-center w-full px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg mb-4"
+                >
+                  <Plus className="h-6 w-6 mr-3" />
+                  <span>Submit Reading</span>
                 </button>
 
                 <button
