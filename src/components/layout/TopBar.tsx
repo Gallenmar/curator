@@ -10,7 +10,7 @@ const TopBar = () => {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = () => {
@@ -19,7 +19,16 @@ const TopBar = () => {
   };
 
   const isActive = (path: string) => {
+    if (path === "/user" && searchParams.get("form") === "reading") {
+      return false;
+    }
     return location.pathname === path;
+  };
+
+  const isReadingFormActive = () => {
+    return (
+      location.pathname === "/user" && searchParams.get("form") === "reading"
+    );
   };
 
   const openReadingForm = () => {
@@ -56,7 +65,9 @@ const TopBar = () => {
               </button>
               <button
                 onClick={openReadingForm}
-                className="relative rounded-full p-2 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-300 dark:hover:bg-gray-700"
+                className={`relative rounded-full p-2 text-blue-600 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-blue-400 dark:hover:bg-blue-900/30 ${
+                  isReadingFormActive() ? "bg-blue-50 dark:bg-blue-900/30" : ""
+                }`}
               >
                 <Plus className="h-6 w-6" />
               </button>
@@ -110,7 +121,9 @@ const TopBar = () => {
             <div className="flex flex-col h-full">
               {/* Header */}
               <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Menu</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Menu
+                </h2>
                 <button
                   onClick={() => setIsMenuOpen(false)}
                   className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -141,25 +154,14 @@ const TopBar = () => {
 
                 <button
                   onClick={openReadingForm}
-                  className="flex items-center w-full px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg mb-4"
+                  className={`flex items-center w-full px-4 py-3 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg mb-4 ${
+                    isReadingFormActive()
+                      ? "bg-blue-50 dark:bg-blue-900/30"
+                      : ""
+                  }`}
                 >
                   <Plus className="h-6 w-6 mr-3" />
                   <span>Submit Reading</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    navigate("/settings");
-                    setIsMenuOpen(false);
-                  }}
-                  className={`flex items-center w-full px-4 py-3 rounded-lg mb-4 transition-colors ${
-                    isActive("/settings")
-                      ? "bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
-                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  }`}
-                >
-                  <Settings className="h-6 w-6 mr-3" />
-                  <span>Settings</span>
                 </button>
 
                 <div className="border-t border-gray-200 dark:border-gray-700 my-4" />
@@ -179,7 +181,20 @@ const TopBar = () => {
                 </button>
 
                 <div className="border-t border-gray-200 dark:border-gray-700 my-4" />
-
+                <button
+                  onClick={() => {
+                    navigate("/settings");
+                    setIsMenuOpen(false);
+                  }}
+                  className={`flex items-center w-full px-4 py-3 rounded-lg mb-4 transition-colors ${
+                    isActive("/settings")
+                      ? "bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  <Settings className="h-6 w-6 mr-3" />
+                  <span>Settings</span>
+                </button>
                 <button
                   onClick={handleLogout}
                   className="flex items-center w-full px-4 py-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
@@ -196,4 +211,4 @@ const TopBar = () => {
   );
 };
 
-export default TopBar; 
+export default TopBar;
