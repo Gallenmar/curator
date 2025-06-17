@@ -90,7 +90,7 @@ const TopBar = () => {
               </button>
               <button
                 onClick={handleLogout}
-                className="relative rounded-full p-2 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-300 dark:hover:bg-gray-700"
+                className="relative rounded-full p-2 text-red-600 dark:text-red-400 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:hover:bg-gray-700"
               >
                 <LogOut className="h-6 w-6" />
               </button>
