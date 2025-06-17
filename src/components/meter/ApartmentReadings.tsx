@@ -119,7 +119,7 @@ const ApartmentReadings = ({
         return value !== undefined ? (
           <div className="flex items-center">
             <Droplet className={`h-4 w-4 ${color}`} />
-            {/* fix colors */}
+            {/* // todo: fix colors */}
             <span>{value}</span>
           </div>
         ) : null;
